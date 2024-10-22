@@ -179,17 +179,18 @@ function updateSavedMoviesPanel() {
         `;
 
         // Adicionar evento para checkboxes
-        savedMovieElement.querySelector('.watched-checkbox').addEventListener('change', function () {
+        const checkbox = savedMovieElement.querySelector('.watched-checkbox');
+        checkbox.addEventListener('change', function () {
             if (this.checked) {
                 // Adicionar o filme à lista de assistidos
                 if (!watchedMovies.some(watched => watched.id === movie.id)) {
                     watchedMovies.push(movie);
+                    saveWatchedMovies(); // Atualiza o localStorage
                 }
 
                 // Remover o filme da lista de salvos
                 savedMovies = savedMovies.filter(m => m.id !== movie.id);
                 localStorage.setItem('savedMovies', JSON.stringify(savedMovies)); // Atualiza localStorage
-                saveWatchedMovies(); // Salvar a lista de assistidos no localStorage
                 updateSavedMoviesPanel(); // Atualiza o painel após remoção
             }
         });
@@ -197,9 +198,10 @@ function updateSavedMoviesPanel() {
         savedMoviesList.appendChild(savedMovieElement);
     });
 }
+
 // Função para salvar filmes assistidos no localStorage
 function saveWatchedMovies() {
-    localStorage.setItem('watchedMovies', JSON.stringify([...new Set(watchedMovies.map(m => m.id))])); // Evitar duplicatas
+    localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies)); // Evitar duplicatas
 }
 
 // Função para formatar a data no formato DD/MM/YYYY
@@ -222,12 +224,11 @@ document.getElementById('toggleSavedMoviesBtn').addEventListener('click', functi
 // Ao carregar a página, atualiza o painel lateral e remove filmes assistidos da lista
 document.addEventListener('DOMContentLoaded', function() {
     updateSavedMoviesPanel();
-    watchedMovies.forEach(watched => {
-        // Remover os filmes assistidos da lista de salvos
-        savedMovies = savedMovies.filter(saved => saved.id !== watched.id);
-    });
+    // Remover os filmes assistidos da lista de salvos
+    savedMovies = savedMovies.filter(saved => !watchedMovies.some(watched => watched.id === saved.id));
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies)); // Atualiza o localStorage
 });
+
 
 // Atualizar a exibição ao carregar a página
 document.addEventListener('DOMContentLoaded', function() {
