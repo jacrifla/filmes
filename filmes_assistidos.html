@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmes Assistidos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card {
+            width: 200px; /* Definindo uma largura fixa para o card */
+        }
+
+        .card-img-top {
+            max-width: 100%; /* A imagem ocupa 100% da largura do card */
+            height: 250px; /* Altura fixa para a imagem */
+            object-fit: contain; /* Assegura que a imagem não seja cortada */
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Filmes Assistidos</h2>
+        <button id="backButton" class="btn btn-secondary mb-3">Voltar</button>
+        <div id="watchedMoviesList" class="row row-cols-1 row-cols-md-3 g-4"></div>
+    </div>
+
+    <!-- Modal para exibir detalhes do filme -->
+    <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="movieModalLabel" class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMovieInfo">
+                    <!-- Detalhes do filme irão aqui -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Carregar os filmes assistidos do localStorage
+        const watchedMovies = JSON.parse(localStorage.getItem('watchedMovies')) || [];
+        const watchedMoviesSet = new Set(); // Para evitar duplicatas
+
+        watchedMovies.forEach(movie => {
+            if (!watchedMoviesSet.has(movie.id)) {
+                watchedMoviesSet.add(movie.id); // Adiciona ID ao conjunto
+                const movieCard = document.createElement('div');
+                movieCard.classList.add('col');
+                movieCard.innerHTML = `
+                    <div class="card mb-3">
+                        <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="card-img-top" alt="${movie.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${movie.title}</h5>
+                            <p class="card-text">Data de Lançamento: ${formatDate(movie.release_date)}</p>
+                            <p class="card-text">Avaliação: ${formatRating(movie.vote_average)}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Ação para abrir o modal com detalhes ao clicar no filme
+                movieCard.addEventListener('click', function () {
+                    openModal(movie.id);
+                });
+
+                watchedMoviesList.appendChild(movieCard);
+            }
+        });
+
+        // Função para abrir o modal com os detalhes do filme
+        async function openModal(movieId) {
+            const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=57d80942fbc1daf9cd1429ea9c9ee8f5&language=pt-BR&append_to_response=credits`);
+            const movie = await response.json();
+
+            const modal = new bootstrap.Modal(document.getElementById('movieModal'));
+            const modalMovieInfo = document.getElementById('modalMovieInfo');
+            const diretor = movie.credits.crew.find(person => person.job === 'Director')?.name || 'Desconhecido';
+            const atores = movie.credits.cast.slice(0, 5).map(actor => actor.name).join(', ') || 'Atores desconhecidos';
+            const releaseDate = formatDate(movie.release_date);
+            const rating = formatRating(movie.vote_average);
+
+            modalMovieInfo.innerHTML = `
+                <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid mb-3" alt="${movie.title}">
+                <p>${movie.overview}</p>
+                <p><strong>Data de Lançamento:</strong> ${releaseDate}</p>
+                <p><strong>Diretor:</strong> ${diretor}</p>
+                <p><strong>Atores:</strong> ${atores}</p>
+                <p><strong>Avaliação:</strong> ${rating}</p>
+            `;
+
+            modal.show();
+        }
+
+        // Função para formatar a data no formato DD/MM/YYYY
+        function formatDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return `${day}/${month}/${year}`;
+        }
+
+        // Função para formatar a avaliação com uma casa decimal
+        function formatRating(rating) {
+            return rating.toFixed(1);
+        }
+
+        // Ação do botão Voltar
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.history.back(); // Retorna à página anterior
+        });
+    </script>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

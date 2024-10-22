@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Filmes</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Barra de busca -->
+    <div class="container mt-4">
+        <div class="input-group mb-3">
+            <input id="searchInput" type="text" class="form-control" placeholder="Procurar por um filme">
+            <button id="searchBtn" class="btn btn-primary">Buscar</button>
+            <button id="toggleSavedMoviesBtn" class="btn btn-primary">Assistir 📺</button>
+            <a href="filmes_assistidos.html" class="btn btn-secondary">Assistidos</a>
+        </div>
+    </div>
+    <!-- Seção para filmes em cartaz -->
+    <div class="container mt-4">
+        <h2 id="nowPlayingTitle">Filmes em Cartaz</h2>
+        <div id="nowPlayingMovies" class="row row-cols-1 row-cols-md-3 g-4">
+            
+        </div>
+    </div>
+
+
+    <!-- Container dos filmes -->
+    <div class="container mt-4">
+        <div id="movies" class="row row-cols-1 row-cols-md-3 g-4"></div>
+    </div>
+
+    <!-- Modal para exibir detalhes do filme -->
+    <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 id="movieModalLabel" class="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalMovieInfo">
+                    <!-- Detalhes do filme irão aqui -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button id="saveMovieBtn" class="btn btn-success">Salvar Filme</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel lateral dos filmes para assistir -->
+    <div id="savedMoviesPanel" class="offcanvas offcanvas-end" tabindex="-1">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Filmes para Assistir</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body" id="savedMoviesList">
+            <!-- Lista de filmes salvos -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
