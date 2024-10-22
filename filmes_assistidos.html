@@ -5,17 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Filmes Assistidos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .card {
-            width: 200px; /* Definindo uma largura fixa para o card */
-        }
-
-        .card-img-top {
-            max-width: 100%; /* A imagem ocupa 100% da largura do card */
-            height: 250px; /* Altura fixa para a imagem */
-            object-fit: contain; /* Assegura que a imagem não seja cortada */
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container mt-4">
@@ -32,9 +22,7 @@
                     <h5 id="movieModalLabel" class="modal-title"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modalMovieInfo">
-                    <!-- Detalhes do filme irão aqui -->
-                </div>
+                <div class="modal-body" id="modalMovieInfo"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </div>

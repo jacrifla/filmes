@@ -24,14 +24,12 @@
             <a href="filmes_assistidos.html" class="btn btn-secondary">Assistidos</a>
         </div>
     </div>
+    
     <!-- Seção para filmes em cartaz -->
     <div class="container mt-4">
         <h2 id="nowPlayingTitle">Filmes em Cartaz</h2>
-        <div id="nowPlayingMovies" class="row row-cols-1 row-cols-md-3 g-4">
-            
-        </div>
+        <div id="nowPlayingMovies" class="row row-cols-1 row-cols-md-3 g-4"></div>
     </div>
-
 
     <!-- Container dos filmes -->
     <div class="container mt-4">
@@ -46,9 +44,7 @@
                     <h5 id="movieModalLabel" class="modal-title"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modalMovieInfo">
-                    <!-- Detalhes do filme irão aqui -->
-                </div>
+                <div class="modal-body" id="modalMovieInfo"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     <button id="saveMovieBtn" class="btn btn-success">Salvar Filme</button>
@@ -63,9 +59,7 @@
             <h5 class="offcanvas-title">Filmes para Assistir</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
-        <div class="offcanvas-body" id="savedMoviesList">
-            <!-- Lista de filmes salvos -->
-        </div>
+        <div class="offcanvas-body" id="savedMoviesList"></div>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->
