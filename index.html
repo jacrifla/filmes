@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Filmes</title>
+    <link rel="icon" href="https://cdn4.iconfinder.com/data/icons/points-of-interest-places/81/Asset_11-512.png" type="image/x-icon">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,17 +17,16 @@
 <body>
 
     <!-- Barra de busca -->
-    <div class="container mt-4">
+    <div class="container mt-4 fixed-top">
         <div class="input-group mb-3">
             <input id="searchInput" type="text" class="form-control" placeholder="Procurar por um filme">
             <button id="searchBtn" class="btn btn-primary">Buscar</button>
-            <button id="toggleSavedMoviesBtn" class="btn btn-primary">Assistir 📺</button>
+            <button id="toggleSavedMoviesBtn" class="btn btn-warning">Assistir 📺</button>
             <a href="filmes_assistidos.html" class="btn btn-secondary">Assistidos</a>
         </div>
     </div>
     
-    <!-- Seção para filmes em cartaz -->
-    <div class="container mt-4">
+    <div class="container mt-4 p-5">
         <h2 id="nowPlayingTitle">Filmes em Cartaz</h2>
         <div id="nowPlayingMovies" class="row row-cols-1 row-cols-md-3 g-4"></div>
     </div>
@@ -41,18 +41,20 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 id="movieModalLabel" class="modal-title"></h5>
+                    <h5 class="modal-title" id="movieModalLabel">Título do Filme</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modalMovieInfo"></div>
-                <div class="modal-footer">
+                <div class="modal-body text-center" id="modalMovieInfo">
+                    <!-- As informações do filme serão inseridas aqui -->
+                </div>
+                <div class="modal-footer justify-content-center">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button id="saveMovieBtn" class="btn btn-success">Salvar Filme</button>
+                    <button type="button" class="btn btn-success" id="saveMovieBtn">Salvar Filme</button>
                 </div>
             </div>
         </div>
     </div>
-
+    
     <!-- Painel lateral dos filmes para assistir -->
     <div id="savedMoviesPanel" class="offcanvas offcanvas-end" tabindex="-1">
         <div class="offcanvas-header">

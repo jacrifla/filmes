@@ -30,14 +30,20 @@
     background-color: #0b5ed7;
 }
 
-.card {
-    width: 200px; /* Definindo uma largura fixa para o card */
-}
-
+/* CSS para padronizar a altura das imagens dos cards */
 .card-img-top {
-    max-width: 100%; /* A imagem ocupa 100% da largura do card */
-    height: 250px; /* Altura fixa para a imagem */
-    object-fit: contain; /* Assegura que a imagem não seja cortada */
+    
+    height: 300px; /* Defina a altura que preferir */
+    object-fit: cover; /* Isso evita distorções */
 }
-
-/* Você pode adicionar mais estilos personalizados aqui */
+.card-body {
+    flex-grow: 1; /* Faz o corpo do card ocupar o espaço disponível */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribui o espaço entre o conteúdo */
+}
+.card-title {
+    overflow: hidden; /* Esconde o texto que ultrapassa */
+    text-overflow: ellipsis; /* Adiciona '...' no final */
+    white-space: nowrap; /* Impede que o texto quebre a linha */
+}

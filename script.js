@@ -64,14 +64,14 @@ function displayNowPlayingMovies(movies) {
         movieElement.classList.add('col');
 
         movieElement.innerHTML = `
-            <div class="card h-100">
-                <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="card-img-top" alt="${movie.title}">
-                <div class="card-body">
-                    <h5 class="card-title">${movie.title}</h5>
-                    <p class="card-text"><strong>Data de Lançamento:</strong> ${formatDate(movie.release_date)}</p>
-                    <p class="card-text"><strong>Avaliação:</strong> ${formatRating(movie.vote_average)}</p>
-                </div>
+        <div class="card h-100">
+            <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="card-img-top" alt="${movie.title}" style="height: 250px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">${movie.title}</h5>
+                <p class="card-text"><strong>Data de Lançamento:</strong> ${formatDate(movie.release_date)}</p>
+                <p class="card-text"><strong>Avaliação:</strong> ${formatRating(movie.vote_average)} / 10</p>
             </div>
+        </div>
         `;
 
         // Ação de abrir o modal com detalhes ao clicar no filme
@@ -109,7 +109,7 @@ function displayMovies(movies) {
                 <div class="card-body">
                     <h5 class="card-title">${movie.title}</h5>
                     <p class="card-text"><strong>Data de Lançamento:</strong> ${releaseDate}</p>
-                    <p class="card-text"><strong>Avaliação:</strong> ${rating}</p>
+                    <p class="card-text"><strong>Avaliação:</strong> ${rating} / 10</p>
                 </div>
             </div>
         `;
@@ -135,13 +135,19 @@ async function openModal(movieId) {
     const releaseDate = formatDate(movie.release_date);
     const rating = formatRating(movie.vote_average);
 
+    // Adicionando gêneros e país de origem
+    const genres = movie.genres.map(genre => genre.name).join(', ') || 'Gêneros desconhecidos';
+    const originCountry = movie.origin_country.join(', ') || 'País de origem desconhecido';
+
     modalMovieInfo.innerHTML = `
-        <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid mb-3" alt="${movie.title}">
+        <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid rounded mb-3" alt="${movie.title}">
         <p>${movie.overview}</p>
         <p><strong>Data de Lançamento:</strong> ${releaseDate}</p>
         <p><strong>Diretor:</strong> ${diretor}</p>
-        <p><strong>Ator(es):</strong> ${atores}</p>
-        <p><strong>Avaliação:</strong> ${rating}</p>
+        <p><strong>Atores:</strong> ${atores}</p>
+        <p><strong>Gêneros:</strong> ${genres}</p>
+        <p><strong>País de Origem:</strong> ${originCountry}</p>
+        <p><strong>Avaliação:</strong> ${rating} / 10</p>
     `;
 
     // Salvando filme ao clicar no botão
@@ -152,6 +158,7 @@ async function openModal(movieId) {
 
     modal.show();
 }
+
 
 // Função para salvar o filme
 function saveMovie(movie) {
@@ -174,9 +181,15 @@ function updateSavedMoviesPanel() {
         savedMovieElement.innerHTML = `
             <div class="d-flex align-items-center mb-2">
                 <input type="checkbox" class="watched-checkbox" data-id="${movie.id}" />
-                <p class="mb-0 ms-2"><strong>${movie.title}</strong> (${releaseDate})</p>
+                <p class="mb-0 ms-2"><strong class="movie-title" data-id="${movie.id}">${movie.title}</strong> (${releaseDate})</p>
             </div>
         `;
+
+        // Adicionar evento para abrir o modal ao clicar no nome do filme
+        const movieTitle = savedMovieElement.querySelector('.movie-title');
+        movieTitle.addEventListener('click', function () {
+            openModal(movie.id); // Abre o modal com detalhes do filme
+        });
 
         // Adicionar evento para checkboxes
         const checkbox = savedMovieElement.querySelector('.watched-checkbox');
@@ -198,6 +211,7 @@ function updateSavedMoviesPanel() {
         savedMoviesList.appendChild(savedMovieElement);
     });
 }
+
 
 // Função para salvar filmes assistidos no localStorage
 function saveWatchedMovies() {

@@ -1,4 +1,3 @@
-
 // Carregar os filmes assistidos do localStorage
 const watchedMovies = JSON.parse(localStorage.getItem('watchedMovies')) || [];
 
@@ -32,17 +31,27 @@ async function openModal(movieId) {
 
     const modal = new bootstrap.Modal(document.getElementById('movieModal'));
     const modalMovieInfo = document.getElementById('modalMovieInfo');
+    
+    // Obtendo as informações do filme
     const diretor = movie.credits.crew.find(person => person.job === 'Director')?.name || 'Desconhecido';
     const atores = movie.credits.cast.slice(0, 5).map(actor => actor.name).join(', ') || 'Atores desconhecidos';
     const releaseDate = formatDate(movie.release_date);
     const rating = formatRating(movie.vote_average);
+    
+    // Adicionando gêneros e país de origem
+    const genres = movie.genres.map(genre => genre.name).join(', ') || 'Gêneros desconhecidos';
+    const originCountry = movie.production_countries.map(country => country.name).join(', ') || 'País de origem desconhecido';
 
+    // Atualizando o conteúdo do modal
     modalMovieInfo.innerHTML = `
-        <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid mb-3" alt="${movie.title}">
+        <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid rounded mb-3" alt="${movie.title}">
+        <p><strong>${movie.title}</strong></p>
         <p>${movie.overview}</p>
         <p><strong>Data de Lançamento:</strong> ${releaseDate}</p>
         <p><strong>Diretor:</strong> ${diretor}</p>
         <p><strong>Atores:</strong> ${atores}</p>
+        <p><strong>Gêneros:</strong> ${genres}</p>
+        <p><strong>País de Origem:</strong> ${originCountry}</p>
         <p><strong>Avaliação:</strong> ${rating} / 10</p>
     `;
 
