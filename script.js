@@ -127,6 +127,7 @@ function displayMovies(movies) {
 async function openModal(movieId) {
     const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=pt-BR&append_to_response=credits`);
     const movie = await response.json();
+    const tituloFilme = document.getElementById('movieModalLabel');
 
     const modal = new bootstrap.Modal(document.getElementById('movieModal'));
     const modalMovieInfo = document.getElementById('modalMovieInfo');
@@ -134,7 +135,8 @@ async function openModal(movieId) {
     const atores = movie.credits.cast.slice(0, 5).map(actor => actor.name).join(', ') || 'Atores desconhecidos';
     const releaseDate = formatDate(movie.release_date);
     const rating = formatRating(movie.vote_average);
-
+    console.log(tituloFilme.innerText = movie.title);
+    
     // Adicionando gêneros e país de origem
     const genres = movie.genres.map(genre => genre.name).join(', ') || 'Gêneros desconhecidos';
     const originCountry = movie.origin_country.join(', ') || 'País de origem desconhecido';

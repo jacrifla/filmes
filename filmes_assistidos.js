@@ -45,7 +45,7 @@ async function openModal(movieId) {
     // Atualizando o conteúdo do modal
     modalMovieInfo.innerHTML = `
         <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid rounded mb-3" alt="${movie.title}">
-        <p><strong>${movie.title}</strong></p>
+        <h5><strong>${movie.title}</strong></h5>
         <p>${movie.overview}</p>
         <p><strong>Data de Lançamento:</strong> ${releaseDate}</p>
         <p><strong>Diretor:</strong> ${diretor}</p>
