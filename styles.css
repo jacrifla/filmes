@@ -47,3 +47,8 @@
     text-overflow: ellipsis; /* Adiciona '...' no final */
     white-space: nowrap; /* Impede que o texto quebre a linha */
 }
+
+.watched-opacity {
+    opacity: 0.5 !important;
+    transition: opacity 0.3s ease !important;
+}

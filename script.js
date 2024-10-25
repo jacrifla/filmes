@@ -94,17 +94,20 @@ function displayMovies(movies) {
         return;
     }
 
-    nowPlayingTitle.innerText = 'Filmes Pesquisados'; // Mantenha o título aqui
+    nowPlayingTitle.innerText = 'Filmes Pesquisados';
 
     movies.forEach(movie => {
         const movieElement = document.createElement('div');
         movieElement.classList.add('col');
 
+        // Verifica se o filme está na lista de assistidos
+        const isWatched = watchedMovies.some(watched => watched.id === movie.id);
+
         const releaseDate = formatDate(movie.release_date);
         const rating = formatRating(movie.vote_average);
 
         movieElement.innerHTML = `
-            <div class="card h-100">
+            <div class="card h-100 ${isWatched ? 'watched-opacity' : ''}">
                 <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="card-img-top" alt="${movie.title}">
                 <div class="card-body">
                     <h5 class="card-title">${movie.title}</h5>
