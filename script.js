@@ -220,8 +220,16 @@ function updateSavedMoviesPanel() {
         
         savedMovieElement.innerHTML = `
             <div class="d-flex align-items-center mb-2">
-                <input type="checkbox" class="watched-checkbox" data-id="${movie.id}" />
-                <p class="mb-0 ms-2"><strong class="movie-title" data-id="${movie.id}">${movie.title}</strong> (${releaseDate})</p>
+                <input type="checkbox" class="form-check-input me-2 watched-checkbox" data-id="${movie.id}" />
+                <div>
+                    <p class="mb-0">
+                        <strong class="movie-title text-primary" data-id="${movie.id}">${movie.title}</strong>
+                    </p>
+                    <small class="text-muted">${releaseDate}</small>
+                </div>
+                <button class="btn btn-outline-danger btn-sm ms-auto remove-btn" data-id="${movie.id}">
+                    <i class="bi bi-trash"></i>
+                </button>
             </div>
         `;
 
@@ -246,6 +254,13 @@ function updateSavedMoviesPanel() {
                 localStorage.setItem('savedMovies', JSON.stringify(savedMovies)); // Atualiza localStorage
                 updateSavedMoviesPanel(); // Atualiza o painel após remoção
             }
+        });
+
+        const removeBtn = savedMovieElement.querySelector('.remove-btn');
+        removeBtn.addEventListener('click', function () {
+            savedMovies = savedMovies.filter(m => m.id !== movie.id);
+            localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+            updateSavedMoviesPanel();
         });
 
         savedMoviesList.appendChild(savedMovieElement);
@@ -281,10 +296,4 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remover os filmes assistidos da lista de salvos
     savedMovies = savedMovies.filter(saved => !watchedMovies.some(watched => watched.id === saved.id));
     localStorage.setItem('savedMovies', JSON.stringify(savedMovies)); // Atualiza o localStorage
-});
-
-
-// Atualizar a exibição ao carregar a página
-document.addEventListener('DOMContentLoaded', function() {
-    updateSavedMoviesPanel();
 });
