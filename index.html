@@ -33,12 +33,12 @@
                 </div>
                 <div class="col-md-9">
                     <div class="input-group">
-            <input id="searchInput" type="text" class="form-control" placeholder="Procurar por um filme">
-            <button id="searchBtn" class="btn btn-primary">Buscar</button>
+                        <input id="searchInput" type="text" class="form-control" placeholder="Procurar por um filme">
+                        <button id="searchBtn" class="btn btn-primary">Buscar</button>
                         <button id="toggleSavedMoviesBtn" class="btn btn-warning w-auto">Assistir 📺</button>
-            <a href="filmes_assistidos.html" class="btn btn-secondary">Assistidos</a>
-        </div>
-    </div>
+                        <a href="filmes_assistidos.html" class="btn btn-secondary">Assistidos</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -73,15 +73,20 @@
                 </div>
             </div>
         </div>
-    </div>
-    
+    </div>    
+
     <!-- Painel lateral dos filmes para assistir -->
     <div id="savedMoviesPanel" class="offcanvas offcanvas-end" tabindex="-1">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title">Filmes para Assistir</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            <h5 class="offcanvas-title" id="savedMoviesPanelLabel">Filmes para Assistir</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body" id="savedMoviesList"></div>
+        <div class="offcanvas-body">
+            <!-- Lista de filmes salvos -->
+            <div id="savedMoviesList" class="list-group list-group-flush">
+                <!-- Os filmes salvos serão populados aqui pela função updateSavedMoviesPanel -->
+            </div>
+        </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->
