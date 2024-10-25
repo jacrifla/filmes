@@ -10,11 +10,14 @@
 </head>
 <body>
     <div class="container mt-4">
-        <h2>Filmes Assistidos</h2>
-        <button id="backButton" class="btn btn-secondary mb-3">Voltar</button>
+        <div class="sticky-top bg-white py-3">
+            <h2>Filmes Assistidos</h2>
+            <button id="backButton" class="btn btn-secondary mb-3">Voltar</button>
+        </div>
         <div id="watchedMoviesList" class="row row-cols-1 row-cols-md-3 g-4"></div>
     </div>
 
+    <!-- Modal para exibir detalhes do filme -->
     <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -31,7 +34,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 
     <script src="filmes_assistidos.js"></script>
     <script src="script.js"></script>
