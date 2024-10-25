@@ -155,6 +155,12 @@ async function openModal(movieId) {
         <p><strong>Avaliação:</strong> ${rating} / 10</p>
     `;
 
+    // Configurar o botão "Assistido"
+    document.getElementById('watchButton').onclick = function() {
+        markAsWatched(movie);
+        modal.hide();
+    };
+
     // Compartilhando filme com outros aplicativos
     document.getElementById('shareBtn').onclick = function() {
         if (navigator.share) {
@@ -177,6 +183,20 @@ async function openModal(movieId) {
     };
 
     modal.show();
+}
+
+function markAsWatched(movie) {
+    // Adicionar o filme à lista de assistidos, se não estiver já lá
+    if (!watchedMovies.some(watched => watched.id === movie.id)) {
+        watchedMovies.push(movie);
+        saveWatchedMovies(); // Salvar no localStorage
+    }
+
+    // Remover o filme da lista de salvos, se estiver lá
+    savedMovies = savedMovies.filter(saved => saved.id !== movie.id);
+    localStorage.setItem('savedMovies', JSON.stringify(savedMovies)); // Atualizar localStorage
+    
+    updateSavedMoviesPanel(); // Atualizar painel lateral
 }
 
 
