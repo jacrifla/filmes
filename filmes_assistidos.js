@@ -1,6 +1,9 @@
 // Carregar os filmes assistidos do localStorage
 const watchedMovies = JSON.parse(localStorage.getItem('watchedMovies')) || [];
 
+// Ordenar os filmes em ordem alfabética pelo título
+watchedMovies.sort((a, b) => a.title.localeCompare(b.title));
+
 const watchedMoviesList = document.getElementById('watchedMoviesList');
 watchedMovies.forEach(movie => {
     const movieCard = document.createElement('div');
