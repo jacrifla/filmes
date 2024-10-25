@@ -55,6 +55,20 @@ async function openModal(movieId) {
         <p><strong>Avaliação:</strong> ${rating} / 10</p>
     `;
 
+     // Compartilhando filme com outros aplicativos
+     document.getElementById('shareBtn').onclick = function() {
+        if (navigator.share) {
+            navigator.share({
+                title: movie.title,
+                text: `Confira este filme: ${movie.title}`,
+                url: `https://www.themoviedb.org/movie/${movieId}`
+            }).then(() => console.log('Filme compartilhado com sucesso!'))
+            .catch(error => console.log('Erro ao compartilhar', error));
+        } else {
+            alert("A função de compartilhamento não é suportada neste dispositivo.");
+        }
+    };
+
     modal.show();
 }
 
