@@ -16,23 +16,41 @@
 </head>
 <body>
 
-    <!-- Barra de busca -->
-    <div class="container mt-4 fixed-top">
-        <div class="input-group mb-3">
+<!-- Barra de navegação -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="row w-100 align-items-center  py-2">
+                <div class="col-md-3 py-2">
+                    <!-- Select de Gêneros -->
+                    <select id="genreSelect" class="form-select me-2"> <!-- Adicionada a classe me-2 -->
+                        <option value="">Selecione um Gênero</option>
+                        <!-- Os gêneros serão adicionados aqui via JavaScript -->
+                    </select>
+                </div>
+                <div class="col-md-9">
+                    <div class="input-group">
             <input id="searchInput" type="text" class="form-control" placeholder="Procurar por um filme">
             <button id="searchBtn" class="btn btn-primary">Buscar</button>
-            <button id="toggleSavedMoviesBtn" class="btn btn-warning">Assistir 📺</button>
+                        <button id="toggleSavedMoviesBtn" class="btn btn-warning w-auto">Assistir 📺</button>
             <a href="filmes_assistidos.html" class="btn btn-secondary">Assistidos</a>
         </div>
     </div>
+            </div>
+        </div>
+    </div>
+</nav>
     
-    <div class="container mt-4 p-5">
-        <h2 id="nowPlayingTitle">Filmes em Cartaz</h2>
+    <div class="container my-4 py-5">
+        <h2 class="py-md-4" id="nowPlayingTitle">Filmes em Cartaz</h2>
         <div id="nowPlayingMovies" class="row row-cols-1 row-cols-md-3 g-4"></div>
     </div>
 
     <!-- Container dos filmes -->
-    <div class="container mt-4">
+    <div class="container">
         <div id="movies" class="row row-cols-1 row-cols-md-3 g-4"></div>
     </div>
 
