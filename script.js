@@ -7,6 +7,7 @@ let watchedMovies = JSON.parse(localStorage.getItem('watchedMovies')) || [];
 document.addEventListener('DOMContentLoaded', function() {
     fetchNowPlayingMovies(); // Carregar filmes em cartaz
     updateSavedMoviesPanel(); // Atualizar painel lateral
+    fetchGenres(); // Carregar filmes por genero
 });
 
 // Ação de buscar filmes ao clicar no botão
@@ -41,6 +42,36 @@ async function searchMovies(query) {
     const data = await response.json();
     displayMovies(data.results); // Exibir apenas os filmes buscados
 }
+
+document.getElementById('genreSelect').addEventListener('change', function () {
+    const genreId = this.value;
+    if (genreId) {
+        clearCurrentMovies(); // Limpar filmes em cartaz
+        fetchMoviesByGenre(genreId); // Buscar filmes pelo gênero
+    }
+});
+
+// Função para buscar filmes por gênero
+async function fetchMoviesByGenre(genreId) {
+    const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&language=pt-BR&with_genres=${genreId}`);
+    const data = await response.json();
+    displayMovies(data.results); // Exibir filmes do gênero escolhido
+}
+
+
+async function fetchGenres() {
+    const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=pt-BR`);
+    const data = await response.json();
+    const genreSelect = document.getElementById('genreSelect');
+
+    data.genres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre.id; // O ID do gênero
+        option.textContent = genre.name; // O nome do gênero
+        genreSelect.appendChild(option);
+    });
+}
+
 
 // Função para buscar filmes em cartaz
 async function fetchNowPlayingMovies() {
