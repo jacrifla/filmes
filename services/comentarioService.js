@@ -1,4 +1,4 @@
-import { BASE_API_URL } from "../other/config";
+import { BASE_API_URL } from "../other/config.js";
 
 const API_BASE_URL = `${BASE_API_URL}/comentarios`;
 
