@@ -9,9 +9,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', (event) => {
-            event.preventDefault(); // Impede o comportamento padrão do botão
+            event.preventDefault();
+            console.log('Toggle button clicked');
             const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            console.log(`Changing input type to: ${type}`);
             passwordInput.setAttribute("type", type);
+            togglePassword.setAttribute("aria-pressed", type === "text" ? "true" : "false");
 
             // Alterna o ícone do olhinho
             togglePassword.querySelector("i").classList.toggle("bi-eye");
