@@ -1,5 +1,6 @@
-// URL da API onde as avaliações estão sendo gerenciadas
-const API_BASE_URL = "http://localhost:4000/avaliacoes";
+import { BASE_API_URL } from "../other/config";
+
+const API_BASE_URL = `${BASE_API_URL}/avaliacoes`;
 
 // Função para buscar avaliações de um filme
 export async function getAvaliacoes(tmdb_id, usuario_id) {

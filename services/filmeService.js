@@ -1,6 +1,7 @@
 import { createToast } from "../components/Toast.js";
+import { BASE_API_URL } from "../other/config.js";
 
-const API_URL = 'http://localhost:4000/filmes';
+const API_URL = `${BASE_API_URL}/filmes`;
 
 // Função para salvar filme no banco de dados e no localStorage
 export async function salvarFilme(tmdbId) {

@@ -1,7 +1,7 @@
 import { createToast } from "../components/Toast.js";
-import { salvarFilme } from "./filmeService.js";
+import { BASE_API_URL } from "../other/config.js";
 
-const API_URL = 'http://localhost:4000/lista_assistir';
+const API_URL = `${BASE_API_URL}/lista_assistir`;
 
 // Função para obter o id do localStorage
 export function getUserId() {

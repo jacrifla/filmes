@@ -1,5 +1,6 @@
-// URL da API onde os comentários estão sendo gerenciados
-const API_BASE_URL = 'http://localhost:4000/comentarios';
+import { BASE_API_URL } from "../other/config";
+
+const API_BASE_URL = `${BASE_API_URL}/comentarios`;
 
 // Função para buscar comentários de um filme
 export async function getComentarios(tmdb_id) {
