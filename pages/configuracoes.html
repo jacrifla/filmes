@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script type="module" src="../scripts/main.js" defer></script>
+</head>
+<body>
+    <div id="header-container" class="bg-dark text-white p-3 text-center"></div>
+
+    <div class="container mt-4">
+        <h1 class="text-center">Configurações do Usuário</h1>
+    </div>
+
+    <div id="message" class="container mt-4 mb-3">
+        <!-- Mensagens de erro ou sucesso podem ser injetadas aqui -->
+    </div>
+
+    <!-- Configuração Form Section -->
+    <div class="container mt-4">
+        <div class="card shadow-lg p-4">
+            <h3 class="mb-4">Atualizar Informações</h3>
+            <form id="configForm">
+                <div class="mb-3">
+                    <label for="nameInput" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nameInput" placeholder="Digite seu nome" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="emailInput" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="emailInput" placeholder="Digite seu email" required>
+                </div>            
+                <div class="mb-3">
+                    <label for="passwordInput" class="form-label">Nova Senha</label>
+                    <input type="password" class="form-control" id="passwordInput" placeholder="Digite sua nova senha">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Atualizar</button>
+            </form>
+
+            <button id="deleteAccount" class="btn btn-danger w-100 mt-3">Excluir Conta</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script type="module" src="../scripts/configuracoes.js"></script>
+</body>
+</html>

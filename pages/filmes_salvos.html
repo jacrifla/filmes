@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Looking for Filmes</title>
+    <title>Filmes Salvos - Looking for Filmes</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <script type="module" src="scripts/main.js" defer></script>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script type="module" src="../scripts/main.js" defer></script>
 </head>
 <body>
     <div id="header-container"></div>
-    <div class="container my-4">
-        <!-- Container da barra de busca -->
-        <div id="search-bar" class="form-row align-items-center mb-3"></div>
-        
-        <!-- Resultados dos filmes -->
-        <div id="movie-results"></div>
-    </div>
 
-    <!-- Scripts necessários do Bootstrap 5 -->
+    <div class="container mt-4">
+        <h2>Filmes Salvos</h2>
+        <ul id="savedMoviesList" class="list-group">
+            <!-- A lista de filmes salvos será carregada aqui -->
+        </ul>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script type="module" src="../scripts/filmesSalvos.js"></script>
 </body>
 </html>
