@@ -3,16 +3,32 @@ import { createToast } from '../components/Toast.js'; // Importe a função crea
 import { getWatchedList, getWatchList } from '../services/listaAssistirService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('loginForm');
+    // Função para adicionar o toggle de visualização de senha
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('passwordInput');
 
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', (event) => {
+            event.preventDefault(); // Impede o comportamento padrão do botão
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+
+            // Alterna o ícone do olhinho
+            togglePassword.querySelector("i").classList.toggle("bi-eye");
+            togglePassword.querySelector("i").classList.toggle("bi-eye-slash");
+        });
+    }
+
+    // Lógica de login
+    const form = document.getElementById('loginForm');
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        
+
         const email = document.getElementById('emailInput').value;
         const password = document.getElementById('passwordInput').value;
 
         const result = await loginUser(email, password);
-        
+
         if (result.success) {
             localStorage.setItem('user', JSON.stringify(result.data));
 
