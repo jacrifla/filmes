@@ -1,10 +1,9 @@
 export default function Header() {
     const header = document.createElement('header');
-    header.className = 'bg-dark text-white';
 
     // Criação de um container para centralizar o conteúdo
     const container = document.createElement('div');
-    container.className = 'container d-flex flex-column align-items-center py-4';
+    container.className = 'container d-flex justify-content-between align-items-center py-4 position-relative';
 
     // Criação do link para o título
     const titleLink = document.createElement('a');
@@ -15,14 +14,14 @@ export default function Header() {
     // Título
     const title = document.createElement('h1');
     title.textContent = 'Cine Explore';
-    title.className = 'mb-4 text-center';
+    title.className = 'mb-0';
 
     // Coloca o título dentro do link
     titleLink.appendChild(title);
 
     // Barra de navegação
     const nav = document.createElement('nav');
-    nav.className = 'navbar navbar-expand-lg navbar-dark w-100';
+    nav.className = 'navbar navbar-expand-lg navbar-dark w-auto';
 
     const button = document.createElement('button');
     button.className = 'navbar-toggler';
@@ -33,6 +32,12 @@ export default function Header() {
     button.setAttribute('aria-expanded', 'false');
     button.setAttribute('aria-label', 'Toggle navigation');
     button.innerHTML = '<span class="navbar-toggler-icon"></span>';
+
+    // Estilo para o botão de hambúrguer para mantê-lo fixo no topo
+    button.style.position = 'absolute';
+    button.style.top = '10px';  // Distância do topo
+    button.style.right = '10px'; // Distância da direita
+    button.style.zIndex = '100'; // Garante que o botão ficará acima do conteúdo
 
     const collapseDiv = document.createElement('div');
     collapseDiv.className = 'collapse navbar-collapse';
@@ -46,14 +51,14 @@ export default function Header() {
 
     // Links para convidados
     const guestLinks = [
-        { text: 'Início', href: '../index.html', icon: 'bi-house-door' },
+        { text: 'Início', href: '../index.html', icon: 'bi-house' },
         { text: 'Login', href: '../pages/login.html', icon: 'bi-box-arrow-in-right' },
         { text: 'Registrar', href: '../pages/cadastro.html', icon: 'bi-person-plus' },
     ];
 
     // Links para usuários logados
     const userLinks = [
-        { text: 'Início', href: '../index.html', icon: 'bi-house-door' },
+        { text: 'Início', href: '../index.html', icon: 'bi-house' },
         { text: 'Filmes Assistidos', href: '../pages/filmes_assistidos.html', icon: 'bi-film' },
         { text: 'Filmes Salvos', href: '../pages/filmes_salvos.html', icon: 'bi-bookmark' },
         { text: 'Configurações', href: '../pages/configuracoes.html', icon: 'bi-gear' },
@@ -69,14 +74,14 @@ export default function Header() {
         anchor.className = 'nav-link';
         anchor.href = link.href;
         
-        // Ícone do link
+        // Criando o ícone e adicionando ao link
         const icon = document.createElement('i');
-        icon.className = `bi ${link.icon} me-2`;  // "me-2" adiciona margem à direita do ícone
+        icon.className = `bi ${link.icon} me-2`;
         anchor.appendChild(icon);
-
-        // Texto do link
-        anchor.textContent = link.text;
-
+    
+        // Adicionando o texto ao link
+        anchor.appendChild(document.createTextNode(link.text));  // Adiciona o texto após o ícone
+    
         listItem.appendChild(anchor);
         navList.appendChild(listItem);
     });
@@ -113,7 +118,7 @@ export default function Header() {
     nav.appendChild(collapseDiv);
 
     // Adiciona o título e a barra de navegação ao container
-    container.appendChild(titleLink);  // Agora o título é um link
+    container.appendChild(titleLink);
     container.appendChild(nav);
 
     // Adiciona o container ao header

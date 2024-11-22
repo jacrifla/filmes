@@ -38,7 +38,7 @@ export async function createSearchBar(onSearchByGenre, onSearchByText) {
 
     // Botão de busca
     const searchButton = document.createElement('button');
-    searchButton.className = 'btn btn-primary ml-2';
+    searchButton.className = 'btn btn-primary ml-2 btn-search';
     searchButton.textContent = 'Buscar';
     searchButton.onclick = () => {
         const query = searchInput.value.trim();

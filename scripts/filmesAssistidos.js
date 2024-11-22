@@ -1,20 +1,8 @@
-import {
-  getUserId,
-  getWatchedList,
-} from '../services/listaAssistirService.js';
+import { getUserId, getWatchedList} from '../services/listaAssistirService.js';
 import { fetchMovieDetails } from '../services/apiservice.js';
-import {
-  getComentarios,
-  addComentario,
-  updateComentario,
-  deleteComentario,
-} from '../services/comentarioService.js';
+import { getComentarios, addComentario, updateComentario, deleteComentario } from '../services/comentarioService.js';
 import { createToast } from '../components/Toast.js';
-import {
-  addAvaliacao,
-  getAvaliacoes,
-  updateAvaliacao,
-} from '../services/avaliacaoService.js';
+import { addAvaliacao, getAvaliacoes, updateAvaliacao} from '../services/avaliacaoService.js';
 
 const watchedMoviesCache = {}; // Cache para armazenar detalhes dos filmes
 
