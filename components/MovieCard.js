@@ -1,4 +1,5 @@
-import { MovieModal } from './MovieModal.js';
+import { CommentModal } from "./CommentModal.js";
+import { MovieModal } from "./MovieModal.js";
 
 export function createMovieCard(movie) {
     const card = document.createElement('div');
@@ -21,10 +22,9 @@ export function createMovieCard(movie) {
     const cardBody = document.createElement('div');
     cardBody.className = 'card-body d-flex flex-column justify-content-between';
 
-    // Título do filme com tamanho máximo
+    // Título do filme
     const title = document.createElement('h5');
-    title.className = 'card-title text-truncate text-center'; // Trunca o título e centraliza
-    title.style.flexGrow = 1; // Garante que o título ocupe o máximo de espaço disponível
+    title.className = 'card-title text-truncate text-center';
     title.textContent = movie.title;
 
     // Formatar data para o padrão dd/mm/yyyy
@@ -34,23 +34,90 @@ export function createMovieCard(movie) {
     const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
     releaseDate.textContent = `Data de Estreia: ${formattedDate}`;
 
-    // Avaliação IMDb com uma casa decimal
+    // Avaliação IMDb
     const rating = document.createElement('p');
     rating.className = 'card-text text-center small';
     rating.textContent = `Avaliação IMDb: ${movie.vote_average.toFixed(1)} / 10`;
 
-    // Adicionando elementos ao corpo do card
     cardBody.appendChild(title);
     cardBody.appendChild(releaseDate);
     cardBody.appendChild(rating);
+
+    // Verifica se o usuário está logado antes de adicionar os botões
+    const isUserLoggedIn = checkIfUserIsLoggedIn(); // Função para verificar autenticação
+
+    if (isUserLoggedIn) {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'd-flex justify-content-around mt-2';
+
+        // Botão de comentário
+        const commentButton = document.createElement('button');
+        commentButton.className = 'btn btn-link btn-card';
+        commentButton.innerHTML = '<i class="bi bi-chat"></i>';
+        commentButton.title = 'Comentar';
+        commentButton.setAttribute('data-tooltip', 'Comentar');
+        commentButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            CommentModal(movie.id, movie.title);
+            console.log(`Comentando no filme ${movie.title}`);
+        });
+
+        // Botão de assistido
+        const watchedButton = document.createElement('button');
+        watchedButton.className = 'btn btn-link btn-card';
+        watchedButton.innerHTML = '<i class="bi bi-eye"></i>';
+        watchedButton.title = 'Marcar como assistido';
+        watchedButton.setAttribute('data-tooltip', 'Marcar como assistido'); // Corrigido
+        watchedButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log(`Marcando como assistido o filme ${movie.title}`);
+        });
+
+        // Botão de adicionar à lista
+        const addToListButton = document.createElement('button');
+        addToListButton.className = 'btn btn-link btn-card';
+        addToListButton.innerHTML = '<i class="bi bi-bookmark"></i>';
+        addToListButton.title = 'Adicionar à lista';
+        addToListButton.setAttribute('data-tooltip', 'Adicionar à lista'); // Corrigido
+        addToListButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            console.log(`Adicionando à lista o filme ${movie.title}`);
+        });
+
+
+        buttonContainer.appendChild(commentButton);
+        buttonContainer.appendChild(watchedButton);
+        buttonContainer.appendChild(addToListButton);
+        cardBody.appendChild(buttonContainer);
+    }
+
     cardElement.appendChild(img);
     cardElement.appendChild(cardBody);
 
     // Quando o card for clicado, abre o modal
     cardElement.addEventListener('click', () => {
-        MovieModal(movie.id); // Chama a função para abrir o modal com os detalhes
+        console.log('ID do Filme: ', movie.id);        
+        MovieModal(movie.id);
     });
 
     card.appendChild(cardElement);
     return card;
+}
+
+function checkIfUserIsLoggedIn() {
+    const user = localStorage.getItem('user');
+
+    // Se o usuário não estiver definido, retorna falso
+    if (!user) {
+        return false;
+    }
+
+    try {
+        // Tenta analisar o JSON do usuário e verifica se tem dados
+        const parsedUser = JSON.parse(user);
+        return parsedUser && Object.keys(parsedUser).length > 0;
+    } catch (error) {
+        console.error('Erro ao analisar o usuário do localStorage:', error);
+        return false;
+    }
 }

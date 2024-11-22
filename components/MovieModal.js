@@ -39,10 +39,10 @@ export async function MovieModal(movieId) {
         const modalContent = `
             <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                    <div class="modal-content bg-dark text-light"> <!-- bg-dark e text-light para o modal dark -->
                         <div class="modal-header">
                             <h5 class="modal-title" id="movieModalLabel">${movie.title}</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row">
@@ -64,7 +64,7 @@ export async function MovieModal(movieId) {
                             ${isLoggedIn ? 
                                 `<button type="button" class="btn btn-primary" id="watchMovieButton">Salvar Filme</button>
                                  <button type="button" class="btn btn-success" id="watchedButton">Assistido</button>` : 
-                                ''}
+                                '' }
                             <button type="button" class="btn btn-info" id="shareBtn">Compartilhar</button>
                         </div>
                     </div>
