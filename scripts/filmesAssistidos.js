@@ -338,20 +338,17 @@ function createCommentElement(comentario, tmdb_id, userId) {
 function createStarRating(rating, tmdb_id, userId) {
   const container = document.createElement('div');
   container.classList.add('star-rating');
+  container.setAttribute('data-tmdb-id', tmdb_id); // Identificador para o filme
 
-  // Atualiza as estrelas de acordo com a avaliação do usuário
   for (let i = 1; i <= 10; i++) {
     const star = document.createElement('i');
-    star.classList.add('fa', 'fa-star', 'text-warning'); // Usando Font Awesome
-
-    // Verifica se a estrela deve ser preenchida    
+    star.classList.add('fa', 'fa-star', 'text-warning');
     if (i <= rating) {
       star.classList.add('fa-solid'); // Marca como preenchida
     } else {
       star.classList.add('fa-regular'); // Marca como vazia
     }
 
-    // Adiciona o evento de clique para a avaliação
     star.addEventListener('click', () => handleStarClick(tmdb_id, userId, i));
 
     container.appendChild(star);
@@ -363,6 +360,22 @@ function createStarRating(rating, tmdb_id, userId) {
 // Lida com o clique nas estrelas
 async function handleStarClick(tmdb_id, userId, rating) {
   try {
+    // Atualiza visualmente as estrelas imediatamente
+    const container = document.querySelector(`[data-tmdb-id="${tmdb_id}"]`);
+    if (container) {
+      const stars = container.querySelectorAll('.fa-star');
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.remove('fa-regular');
+          star.classList.add('fa-solid'); // Marca como preenchida
+        } else {
+          star.classList.remove('fa-solid');
+          star.classList.add('fa-regular'); // Marca como vazia
+        }
+      });
+    }
+
+    // Atualiza no backend
     const avaliacao = await getAvaliacoes(tmdb_id, userId);
     if (avaliacao) {
       await updateAvaliacao(userId, tmdb_id, rating);
@@ -376,13 +389,10 @@ async function handleStarClick(tmdb_id, userId, rating) {
     }
 
     createToast('Avaliação salva com sucesso!', 'success');
-    renderWatchedMovies(userId); // Re-renderiza a lista
   } catch (error) {
     createToast('Erro ao salvar avaliação', 'danger');
   }
 }
-
-
 
 // Função para editar o comentário
 function handleEditComment(comentario, textElement) {
