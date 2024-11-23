@@ -69,3 +69,17 @@ export async function resetPassword(email, novaSenha) {
         return { success: false, message: error.message };
     }
 }
+
+// Função para pegar o nome do usuario
+export async function getUserName(userId) {
+    
+    try {
+        const result = await fetchData(`/${userId}`, 'GET');
+        console.log('DATA',result.data.nome);
+
+        return result.data.nome;
+    } catch (error) {
+        console.error('Erro ao pegar nome do usuário:', error);
+        return null;
+    }
+}
