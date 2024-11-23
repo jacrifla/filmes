@@ -20,24 +20,29 @@ async function displayMovies(movies) {
     // Recupera os filmes assistidos do localStorage
     const watchedMovies = JSON.parse(localStorage.getItem('watchedMovies') || '[]');
 
-    movies.forEach(movie => {
-        const movieCard = createMovieCard(movie); // Aqui chamamos a função de criação do card
+    movies.forEach(async (movie) => {
+        const movieCard = await createMovieCard(movie); // Aguarda a criação do card, caso seja async
+        
+        if (!(movieCard instanceof HTMLElement)) {
+            console.error('Erro: movieCard não é um elemento válido', movieCard);
+            return;
+        }
     
-        // Verifica se o filme foi assistido e aplica a classe "watched"
+        // Verifica se o filme foi assistido
         if (watchedMovies.includes(movie.id)) {
             movieCard.classList.add('watched');
         }
     
-        // Adiciona um ID único ao card para poder aplicar a classe 'watched' diretamente
         movieCard.id = `movie-card-${movie.id}`;
     
-        // Abre o modal ao clicar no card do filme
+        // Abre o modal ao clicar no card
         movieCard.addEventListener('click', () => {
-            MovieModal(movie.id);  // Chama a função para exibir o modal com o ID do filme
+            MovieModal(movie.id);
         });
     
-        movieResultsContainer.appendChild(movieCard);  // Adiciona o card no container
+        movieResultsContainer.appendChild(movieCard);
     });
+    
 }
 
 // Funções de busca

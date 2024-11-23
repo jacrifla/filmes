@@ -31,7 +31,7 @@ function createModalContent(movie) {
     };
 
     return `
-        <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal fade" id="movieModal" aria-labelledby="movieModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content bg-dark text-light">
                     <div class="modal-header">

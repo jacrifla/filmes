@@ -1,22 +1,28 @@
+import { getUserId } from '../other/auth.js';
+import { fetchUserRating, createStarContainer } from '../scripts/ratings.js';
 import { createCardButtons } from './movieCardButtons.js';
 import { MovieModal } from './MovieModal.js';
 
-export function createMovieCard(movie) {
-    const card = document.createElement('div');
-    card.className = 'col-12 col-sm-6 col-md-4 col-lg-3'; // Ajuste para responsividade com grid do Bootstrap
+const idUser = getUserId();
 
-    // Cria o card com Bootstrap
+
+export async function createMovieCard(movie, userId, userRating) {
+    userId = idUser
+
+    const card = document.createElement('div');
+    card.className = 'col-12 col-sm-6 col-md-4 col-lg-3';
+
     const cardElement = document.createElement('div');
-    cardElement.className = 'card mb-4'; 
+    cardElement.className = 'card mb-4';
 
     // Imagem do filme com tamanho fixo
     const img = document.createElement('img');
     img.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
     img.className = 'card-img-top';
     img.alt = movie.title;
-    img.style.objectFit = 'cover'; // Faz a imagem cobrir a área
-    img.style.height = '350px'; // Altura padrão para todas as imagens
-    img.style.width = '100%'; // Faz a imagem preencher toda a largura do card
+    img.style.objectFit = 'cover';
+    img.style.height = '350px';
+    img.style.width = '100%';
 
     // Corpo do card
     const cardBody = document.createElement('div');
@@ -31,17 +37,22 @@ export function createMovieCard(movie) {
     const releaseDate = document.createElement('p');
     releaseDate.className = 'card-text text-center small';
     const date = new Date(movie.release_date);
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-    releaseDate.textContent = `Lançamento: ${formattedDate}`;
+    releaseDate.textContent = `Lançamento: ${date.toLocaleDateString('pt-BR')}`;
 
     // Avaliação IMDb
     const rating = document.createElement('p');
     rating.className = 'card-text text-center small';
     rating.textContent = `IMDb: ${movie.vote_average.toFixed(1)} / 10`;
 
+    // Cria as estrelas de avaliação
+    const initialRating = await fetchUserRating(movie.id, userId);    
+    const starContainer = createStarContainer(movie, initialRating);
+
+    // Adiciona os elementos no card
     cardBody.appendChild(title);
     cardBody.appendChild(releaseDate);
     cardBody.appendChild(rating);
+    cardBody.appendChild(starContainer);
 
     // Verifica se o usuário está logado antes de adicionar os botões
     const isUserLoggedIn = checkIfUserIsLoggedIn(); // Função para verificar autenticação
@@ -61,6 +72,8 @@ export function createMovieCard(movie) {
     });
 
     card.appendChild(cardElement);
+
+    // Retorna o elemento completo do card
     return card;
 }
 
@@ -73,11 +86,10 @@ function checkIfUserIsLoggedIn() {
     }
 
     try {
-        // Tenta analisar o JSON do usuário e verifica se tem dados
         const parsedUser = JSON.parse(user);
         return parsedUser && Object.keys(parsedUser).length > 0;
     } catch (error) {
-        console.error('Erro ao analisar o usuário do localStorage:', error);
+        console.error('Erro ao verificar login:', error);
         return false;
     }
 }

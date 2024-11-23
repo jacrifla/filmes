@@ -1,13 +1,9 @@
 import { createToast } from "../components/Toast.js";
+import { getUserId } from "../other/auth.js";
 import { BASE_API_URL } from "../other/config.js";
 
 const API_URL = `${BASE_API_URL}/lista_assistir`;
-
-// Função para obter o id do localStorage
-export function getUserId() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user?.id || null;
-}
+const userId = getUserId();
 
 // Função para salvar no localStorage na lista de filmes "para assistir"
 function saveFilmToWatchList(tmdbId) {

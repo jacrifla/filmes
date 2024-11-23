@@ -9,9 +9,8 @@ export async function getAvaliacoes(tmdb_id, usuario_id) {
         const response = await fetch(`${API_BASE_URL}/${tmdb_id}/${usuario_id}`);
 
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error(`Erro ao buscar avaliações para o filme ${tmdb_id} e usuário ${usuario_id}:`, errorData.message);
-            return null;
+            // Apenas verifica se a resposta é ok, mas não loga o erro no console
+            return null; // Retorna null caso não haja avaliação
         }
 
         const data = await response.json();

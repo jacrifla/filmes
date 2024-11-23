@@ -1,5 +1,5 @@
+import { getUserId } from '../other/auth.js';
 import { renderWatchedMovies } from '../scripts/watchedMovies.js';
-import { getUserId } from '../services/listaAssistirService.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const userId = getUserId();

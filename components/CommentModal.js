@@ -1,7 +1,7 @@
 import { addComentario, getComentarios } from "../services/comentarioService.js";
-import { getUserId } from "../services/listaAssistirService.js";
 import { createToast } from "../components/Toast.js";
 import { getUserName } from "../services/authService.js";
+import { getUserId } from "../other/auth.js";
 
 export function CommentModal(movieId, movieTitle) {
     // Verifica se o modal já existe na página
