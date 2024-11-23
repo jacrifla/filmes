@@ -112,19 +112,24 @@ async function loadComments(movieId) {
         // Cria os elementos para exibir os comentários
         comentarios.data.forEach(({ comentario, usuario_id, criado_em }, index) => {
             const commentDiv = document.createElement('div');
-            commentDiv.className = 'mb-2 p-2 bg-secondary text-light rounded';
+            commentDiv.className = 'mb-3 p-3 bg-secondary text-light rounded d-flex flex-column';
 
-            // Obtém o nome do usuário
-            const usuarioNome = usuarios[index];
+            // Obtém o nome do usuário (pegando apenas o primeiro nome)
+            const usuarioNome = usuarios[index].split(' ')[0]; // Apenas o primeiro nome
 
             // Formata a data
             const date = new Date(criado_em);
             const formattedDate = formatDate(date);
 
+            // Estrutura os elementos dentro do comentário
             commentDiv.innerHTML = `
-                <p class="mb-1"><strong>${usuarioNome}</strong> <span class="text-muted small">${formattedDate}</span></p>
-                <p class="mb-0">${comentario}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>${usuarioNome}</strong>
+                    <span class="text-muted small">${formattedDate}</span>
+                </div>
+                <p class="mb-0 mt-2">${comentario}</p>
             `;
+            
             commentsList.appendChild(commentDiv);
         });
     } catch (error) {
@@ -133,13 +138,13 @@ async function loadComments(movieId) {
     }
 }
 
-// Função para formatar a data
+// Função para formatar a data no formato "dd/mm/yyyy às hh:mm"
 function formatDate(date) {
     return date.toLocaleString('pt-BR', {
         day: '2-digit',
-        month: 'long',  // Exibe o mês por extenso
+        month: '2-digit',
         year: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
     });
 }
