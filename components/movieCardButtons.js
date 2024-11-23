@@ -1,4 +1,5 @@
 import { addToWatchList, markAsWatched } from "../services/listaAssistirService.js";
+import { CommentModal } from "./CommentModal.js";
 
 export function createCardButtons(movie) {
     const buttonContainer = document.createElement('div');

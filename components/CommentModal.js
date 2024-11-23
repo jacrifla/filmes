@@ -10,8 +10,6 @@ export function CommentModal(movieId, movieTitle) {
         modal = document.createElement('div');
         modal.id = 'commentModal';
         modal.className = 'modal fade';
-        modal.setAttribute('tabindex', '-1');
-        modal.setAttribute('aria-hidden', 'true');
         modal.innerHTML = `
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-light">
@@ -94,8 +92,6 @@ async function loadComments(movieId) {
 
     try {
         const comentarios = await getComentarios(movieId);
-        console.log(comentarios.data);
-
         if (comentarios.data.length === 0) {
             commentsList.innerHTML = '<p class="text-muted">Nenhum comentário ainda. Seja o primeiro a comentar!</p>';
             return;
@@ -133,7 +129,7 @@ async function loadComments(movieId) {
             commentsList.appendChild(commentDiv);
         });
     } catch (error) {
-        console.error('Erro ao carregar os comentários:', error);
+        console.error(error);
         commentsList.innerHTML = '<p class="text-danger">Erro ao carregar os comentários.</p>';
     }
 }

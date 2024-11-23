@@ -7,16 +7,23 @@ export async function getComentarios(tmdb_id) {
   try {
     const response = await fetch(`${API_BASE_URL}/${tmdb_id}`);
     
+    // Se a resposta for 404, não logar erro no console
+    if (response.status === 404) {
+      return { data: [] }; // Retorna um objeto vazio se não houver comentários
+    }
+    
     if (!response.ok) {
+      // Logar outros erros além do 404
       const errorData = await response.json();
       console.error(`Erro ao buscar comentários para o filme ${tmdb_id}:`, errorData.message);
       return null;
     }
-
+    
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Erro ao buscar comentários:", error.message);
+
+    console.error(error.message);
     return null;
   }
 };
