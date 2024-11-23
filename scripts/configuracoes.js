@@ -1,4 +1,6 @@
 import { updateUser, deleteUser } from '../services/authService.js';
+import { getRatings } from '../services/avaliacaoService.js';
+import { getWatchList, getWatchedList } from '../services/listaAssistirService.js';
 
 let userId; // Declare userId no escopo global
 
@@ -9,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carregar dados do usuário quando a página for carregada
     loadUserData();
+
+    // Carregar estatísticas do usuário
+    loadUserStatistics();
 
     // Manipular envio do formulário de configurações
     form.addEventListener('submit', async (event) => {
@@ -73,5 +78,21 @@ async function loadUserData() {
         document.getElementById('emailInput').value = storedUserData.email || '';
     } else {
         console.log('Dados do usuário não encontrados no localStorage.');
+    }
+}
+
+// Função para carregar as estatísticas do usuário
+async function loadUserStatistics() {
+    try {
+        const watchList = await getWatchList();  // Função para obter filmes no watchlist
+        const watchedMovies = await getWatchedList(); // Função para obter filmes assistidos
+        const ratingCount = await getRatings(userId);       
+
+        // Atualizando os contadores no HTML
+        document.getElementById('watchedCount').textContent = watchedMovies.data.length;        
+        document.getElementById('watchlistCount').textContent = watchList.data.length;
+        document.getElementById('ratingCount').textContent = ratingCount.length;
+    } catch (error) {
+        console.error('Erro ao carregar as estatísticas do usuário:', error);
     }
 }

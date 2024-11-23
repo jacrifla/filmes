@@ -22,6 +22,18 @@ export async function getAvaliacoes(tmdb_id, usuario_id) {
     }
 }
 
+export async function getRatings(usuario_id) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/${usuario_id}`);        
+
+        const result = await response.json();        
+        return result.data;
+    } catch (error) {
+        console.error(error);
+        return 0;
+    }
+}
+
 // Função para adicionar uma avaliação
 export async function addAvaliacao(avaliacao) {
 
@@ -44,7 +56,6 @@ export async function addAvaliacao(avaliacao) {
         throw error;
     }
 }
-
 
 // Função para atualizar uma avaliação
 export async function updateAvaliacao(usuarioId, filmeId, rating) {

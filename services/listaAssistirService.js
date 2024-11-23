@@ -204,3 +204,29 @@ export async function removeFromWatchList(tmdbId) {
     }
 }
 
+// Verifica se o filme está na lista de filmes assistidos
+export async function isMovieInWatchedList(movieId) {
+    const watchedMoviesResponse = await getWatchedList();
+    
+    // Verifique se a resposta tem a chave 'data' e se é um array
+    if (watchedMoviesResponse && Array.isArray(watchedMoviesResponse.data)) {
+        return watchedMoviesResponse.data.some(movie => movie.id === movieId);
+    } else {
+        console.error("watchedMoviesResponse.data não é um array:", watchedMoviesResponse);
+        return false;
+    }
+}
+
+// Verifica se o filme está na lista de filmes "para assistir"
+export async function isMovieInWatchList(movieId) {
+    const watchListResponse = await getWatchList();
+    
+    // Verifique se a resposta tem a chave 'data' e se é um array
+    if (watchListResponse && Array.isArray(watchListResponse.data)) {
+        return watchListResponse.data.some(movie => movie.id === movieId);
+    } else {
+        console.error("watchListResponse.data não é um array:", watchListResponse);
+        return false; 
+    }
+}
+

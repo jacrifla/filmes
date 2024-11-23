@@ -32,12 +32,12 @@ export function createMovieCard(movie) {
     releaseDate.className = 'card-text text-center small';
     const date = new Date(movie.release_date);
     const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-    releaseDate.textContent = `Data de Estreia: ${formattedDate}`;
+    releaseDate.textContent = `Lançamento: ${formattedDate}`;
 
     // Avaliação IMDb
     const rating = document.createElement('p');
     rating.className = 'card-text text-center small';
-    rating.textContent = `Avaliação IMDb: ${movie.vote_average.toFixed(1)} / 10`;
+    rating.textContent = `IMDb: ${movie.vote_average.toFixed(1)} / 10`;
 
     cardBody.appendChild(title);
     cardBody.appendChild(releaseDate);

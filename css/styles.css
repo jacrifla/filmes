@@ -9,6 +9,8 @@
     --accent: #7b2ef9;
     --accent-secondary: #ff66b2;
     --card-bg: rgba(26, 27, 46, 0.8);
+    --danger:red;
+    --warning: yellow;
 }
 
 body {
@@ -146,4 +148,20 @@ header {
 .btn-card:hover::after {
     opacity: 1;
     visibility: visible;
+}
+
+#watchedMoviesList {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    /* grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); */
+    gap: 20px;
+    padding: 20px;
+}
+.danger-card {
+    border: 2px solid --danger;
+}
+.danger-card h3 {
+    color: var(--warning);
 }

@@ -61,7 +61,7 @@ export default function Header() {
         { text: 'Início', href: '../index.html', icon: 'bi-house' },
         { text: 'Filmes Assistidos', href: '../pages/filmes_assistidos.html', icon: 'bi-film' },
         { text: 'Filmes Salvos', href: '../pages/filmes_salvos.html', icon: 'bi-bookmark' },
-        { text: 'Configurações', href: '../pages/configuracoes.html', icon: 'bi-gear' },
+        { text: 'Minha Conta', href: '../pages/configuracoes.html', icon: 'bi-gear' },
     ];
 
     const links = isLoggedIn ? userLinks : guestLinks;
