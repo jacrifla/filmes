@@ -1,5 +1,5 @@
-import { CommentModal } from "./CommentModal.js";
-import { MovieModal } from "./MovieModal.js";
+import { createCardButtons } from './movieCardButtons.js';
+import { MovieModal } from './MovieModal.js';
 
 export function createMovieCard(movie) {
     const card = document.createElement('div');
@@ -47,47 +47,7 @@ export function createMovieCard(movie) {
     const isUserLoggedIn = checkIfUserIsLoggedIn(); // Função para verificar autenticação
 
     if (isUserLoggedIn) {
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'd-flex justify-content-around mt-2';
-
-        // Botão de comentário
-        const commentButton = document.createElement('button');
-        commentButton.className = 'btn btn-link btn-card';
-        commentButton.innerHTML = '<i class="bi bi-chat"></i>';
-        commentButton.title = 'Comentar';
-        commentButton.setAttribute('data-tooltip', 'Comentar');
-        commentButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            CommentModal(movie.id, movie.title);
-            console.log(`Comentando no filme ${movie.title}`);
-        });
-
-        // Botão de assistido
-        const watchedButton = document.createElement('button');
-        watchedButton.className = 'btn btn-link btn-card';
-        watchedButton.innerHTML = '<i class="bi bi-eye"></i>';
-        watchedButton.title = 'Marcar como assistido';
-        watchedButton.setAttribute('data-tooltip', 'Marcar como assistido'); // Corrigido
-        watchedButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            console.log(`Marcando como assistido o filme ${movie.title}`);
-        });
-
-        // Botão de adicionar à lista
-        const addToListButton = document.createElement('button');
-        addToListButton.className = 'btn btn-link btn-card';
-        addToListButton.innerHTML = '<i class="bi bi-bookmark"></i>';
-        addToListButton.title = 'Adicionar à lista';
-        addToListButton.setAttribute('data-tooltip', 'Adicionar à lista'); // Corrigido
-        addToListButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            console.log(`Adicionando à lista o filme ${movie.title}`);
-        });
-
-
-        buttonContainer.appendChild(commentButton);
-        buttonContainer.appendChild(watchedButton);
-        buttonContainer.appendChild(addToListButton);
+        const buttonContainer = createCardButtons(movie);
         cardBody.appendChild(buttonContainer);
     }
 

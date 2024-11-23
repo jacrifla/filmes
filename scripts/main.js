@@ -21,7 +21,7 @@ async function displayMovies(movies) {
     const watchedMovies = JSON.parse(localStorage.getItem('watchedMovies') || '[]');
 
     movies.forEach(movie => {
-        const movieCard = createMovieCard(movie);
+        const movieCard = createMovieCard(movie); // Aqui chamamos a função de criação do card
     
         // Verifica se o filme foi assistido e aplica a classe "watched"
         if (watchedMovies.includes(movie.id)) {
@@ -36,7 +36,7 @@ async function displayMovies(movies) {
             MovieModal(movie.id);  // Chama a função para exibir o modal com o ID do filme
         });
     
-        movieResultsContainer.appendChild(movieCard);
+        movieResultsContainer.appendChild(movieCard);  // Adiciona o card no container
     });
 }
 

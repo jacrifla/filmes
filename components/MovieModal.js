@@ -1,154 +1,100 @@
 import { addToWatchList, markAsWatched } from '../services/listaAssistirService.js';
 import { fetchMovieDetails } from '../services/apiservice.js';
 
-
+// Limpa o modal e os efeitos relacionados
 function cleanUpModal() {
-    // Remove qualquer modal e backdrop restantes
     const existingModal = document.getElementById('movieModal');
     if (existingModal) {
         existingModal.remove();
     }
 
-    // Remove o backdrop e a classe modal-open do body, se existirem
     const backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
         backdrop.remove();
     }
 
-    // Restaura o scroll do body
     document.body.classList.remove('modal-open');
-    document.body.style.overflow = ''; // Garante que o overflow do body é restaurado
-
-    // Restaura o scroll do html, caso tenha sido afetado
-    document.documentElement.style.overflow = ''; // Restaura overflow do html
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
 }
 
+// Cria o conteúdo do modal com os dados do filme
+function createModalContent(movie) {
+    // Função para criar cada seção de informação (Data, Avaliação, etc.)
+    const createInfoItem = (iconClass, title, value, color) => {
+        return `
+            <p><i class="${iconClass}" style="font-size: 1.2rem; margin-right: 8px; color: ${color};"></i>
+                <strong style="font-size: 0.9rem; color: ${color};">${title}:</strong>
+                <span style="font-size: 0.9rem; color: #ffffff;">${value}</span>
+            </p>
+        `;
+    };
 
-export async function MovieModal(movieId) {
-    try {
-        // Limpa o modal anterior
-        cleanUpModal();
+    return `
+        <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="movieModalLabel">${movie.title}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <!-- Imagem do filme -->
+                            <div class="col-md-4">
+                                <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid rounded" alt="${movie.title}" style="object-fit: cover;">
+                            </div>
+                            <div class="col-md-8">
+                                <!-- Dados do Filme -->
+                                ${createInfoItem('bi bi-calendar-fill', 'Data de Lançamento', new Date(movie.release_date).toLocaleDateString(), '#FFD700')}
+                                ${createInfoItem('bi bi-star-fill', 'Avaliação', `${movie.vote_average.toFixed(1)} / 10`, '#f39c12')}
+                                ${createInfoItem('bi bi-person', 'Diretor', movie.credits?.crew?.find(person => person.job === 'Director')?.name || 'Desconhecido', '#3498db')}
+                                ${createInfoItem('bi bi-clock-fill', 'Duração', `${Math.floor(movie.runtime / 60)}h ${movie.runtime % 60}m`, '#1abc9c')}
+                                ${createInfoItem('bi bi-person-fill', 'Atores', movie.credits.cast.slice(0, 5).map(actor => actor.name).join(', ') || 'Desconhecido', '#e74c3c')}
+                                ${createInfoItem('bi bi-film', 'Gêneros', movie.genres.map(genre => genre.name).join(', ') || 'Desconhecido', '#8e44ad')}
 
-        // Obtém detalhes do filme
-        const movie = await fetchMovieDetails(movieId);
-
-        // Verifica se o usuário está logado
-        const isLoggedIn = localStorage.getItem('user') !== null;
-
-        // Monta o conteúdo do modal, incluindo os botões somente se o usuário estiver logado
-        const modalContent = `
-            <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content bg-dark text-light"> <!-- bg-dark e text-light para o modal dark -->
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="movieModalLabel">${movie.title}</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <img src="https://image.tmdb.org/t/p/w500/${movie.poster_path}" class="img-fluid rounded" alt="${movie.title}" style="object-fit: cover;">
-                                </div>
-                                <div class="col-md-8">
-                                    <p><strong>Data de Lançamento:</strong> ${new Date(movie.release_date).toLocaleDateString()}</p>
-                                    <p><strong>Diretor:</strong> ${movie.credits?.crew?.find(person => person.job === 'Director')?.name || 'Desconhecido'}</p>
-                                    <p><strong>Atores:</strong> ${movie.credits.cast.slice(0, 5).map(actor => actor.name).join(', ') || 'Desconhecido'}</p>
-                                    <p><strong>Gêneros:</strong> ${movie.genres.map(genre => genre.name).join(', ') || 'Desconhecido'}</p>
-                                    <p><strong>Avaliação:</strong> ${movie.vote_average.toFixed(1)} / 10</p>
-                                    <p>${movie.overview}</p>
-                                </div>
+                                <!-- Sinopse -->
+                                <p>
+                                    <strong style="font-size: 0.9rem; color: #ffffff;">Sinopse:</strong>
+                                    <span style="font-size: 0.9rem; color: #ffffff;">${movie.overview}</span>
+                                </p>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                            ${isLoggedIn ? 
-                                `<button type="button" class="btn btn-primary" id="watchMovieButton">Salvar Filme</button>
-                                 <button type="button" class="btn btn-success" id="watchedButton">Assistido</button>` : 
-                                '' }
-                            <button type="button" class="btn btn-info" id="shareBtn">Compartilhar</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
-        `;
-
-        document.body.insertAdjacentHTML('beforeend', modalContent);
-
-        const modalElement = document.getElementById('movieModal');
-        
-        // Inicializa e mostra o modal
-        const modalInstance = new bootstrap.Modal(modalElement);
-        modalInstance.show();
-
-        if (isLoggedIn) {
-            // Adicionar eventos no botão de salvar
-            const saveButton = modalElement.querySelector('#watchMovieButton');
-            if (!saveButton.hasAttribute('data-event-bound')) {
-                saveButton.addEventListener('click', async () => {
-                    await addToWatchList(movie.id);
-                    modalInstance.hide();
-                });
-                saveButton.setAttribute('data-event-bound', 'true');
-            }
-
-            // Adicionar eventos no botão de assistido
-            const watchButton = modalElement.querySelector('#watchedButton');
-            if (!watchButton.hasAttribute('data-event-bound')) {
-                watchButton.addEventListener('click', async () => {
-                    await markAsWatched(movie.id);
-                    modalInstance.hide();
-                });
-                watchButton.setAttribute('data-event-bound', 'true');
-            }
-        }
-
-        modalElement.querySelector('#shareBtn').addEventListener('click', () => {
-            shareMovie(movie);
-        });
-
-        modalElement.addEventListener('hidden.bs.modal', () => {
-            cleanUpModal();
-        });
-
-    } catch (error) {
-        console.error('Erro ao carregar o filme para o modal:', error);
-    }
+        </div>
+    `;
 }
 
 
-let isSharing = false;  // Variável para controlar o estado do compartilhamento
+// Inicializa e mostra o modal
+function initializeModal(modalElement) {
+    const modalInstance = new bootstrap.Modal(modalElement);
+    modalInstance.show();
 
-function shareMovie(movie) {
-    if (isSharing) {
-        // Se o compartilhamento já estiver em andamento, retorna para evitar duplicação
-        return;
-    }
+    modalElement.addEventListener('hidden.bs.modal', () => {
+        cleanUpModal();
+    });
+}
 
-    console.log(`Tentando compartilhar o filme "${movie.title}".`);
-    const shareButton = document.getElementById('shareBtn');
-    
-    if (navigator.share) {
-        // Desabilita o botão temporariamente para evitar múltiplas chamadas
-        shareButton.disabled = true;
-        isSharing = true;  // Marca que o compartilhamento está em andamento
+// Obtém os detalhes do filme e exibe o modal
+export async function MovieModal(movieId) {
+    try {
+        cleanUpModal();  // Limpa o modal anterior
 
-        navigator.share({
-            title: movie.title,
-            text: `Confira este filme: ${movie.title}`,
-            url: `https://www.themoviedb.org/movie/${movie.id}`
-        }).then(() => {
-            console.log('Filme compartilhado com sucesso!');
-        }).catch(error => {
-            console.error('Erro ao compartilhar:', error);
-            alert("Falha ao compartilhar o filme. Tente novamente mais tarde.");
-        }).finally(() => {
-            // Reabilita o botão após um atraso de 1 segundo e reseta o estado
-            setTimeout(() => {
-                shareButton.disabled = false;
-                isSharing = false;  // Reseta a variável de controle
-            }, 1000);
-        });
-    } else {
-        alert("A função de compartilhamento não é suportada neste dispositivo.");
+        const movie = await fetchMovieDetails(movieId);  // Obtém detalhes do filme
+
+        const modalContent = createModalContent(movie);  // Cria o conteúdo do modal
+        document.body.insertAdjacentHTML('beforeend', modalContent);  // Adiciona o modal no DOM
+
+        const modalElement = document.getElementById('movieModal');
+        initializeModal(modalElement);  // Inicializa e mostra o modal
+
+    } catch (error) {
+        console.error('Erro ao carregar o filme para o modal:', error);
     }
 }
