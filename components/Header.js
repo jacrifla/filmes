@@ -59,8 +59,8 @@ export default function Header() {
     // Links para usuários logados
     const userLinks = [
         { text: 'Início', href: '../index.html', icon: 'bi-house' },
-        { text: 'Filmes Assistidos', href: '../pages/filmes_assistidos.html', icon: 'bi-film' },
-        { text: 'Filmes Salvos', href: '../pages/filmes_salvos.html', icon: 'bi-bookmark' },
+        { text: 'Assistidos', href: '../pages/filmes_assistidos.html', icon: 'bi-film' },
+        { text: 'Watchlist', href: '../pages/filmes_salvos.html', icon: 'bi-bookmark' },
         { text: 'Minha Conta', href: '../pages/configuracoes.html', icon: 'bi-gear' },
     ];
 
