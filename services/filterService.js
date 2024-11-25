@@ -4,6 +4,9 @@ import { fetchGenres } from "./apiservice.js";
 export async function loadGenres() {
     const genres = await fetchGenres();  // Função para buscar os gêneros da API (você já tem uma função `fetchGenres` implementada)
     const genreSelect = document.getElementById('genreFilter');
+
+    // Ordenar os gêneros em ordem alfabética
+    genres.sort((a, b) => a.name.localeCompare(b.name));
     
     genres.forEach(genre => {
         const option = document.createElement('option');
@@ -21,8 +24,8 @@ export async function loadYears(watchedMovies) {
         return year;
     });
 
-    // Filtra os anos para não ter duplicatas
-    const uniqueYears = [...new Set(years)];
+    // Filtra os anos para não ter duplicatas e ordena em ordem decrescente
+    const uniqueYears = [...new Set(years)].sort((a, b) => b - a);
 
     // Preenche o select com os anos únicos
     uniqueYears.forEach(year => {

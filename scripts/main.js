@@ -27,10 +27,12 @@ async function displayMovies(movies) {
             console.error('Erro: movieCard não é um elemento válido', movieCard);
             return;
         }
-    
-        // Verifica se o filme foi assistido
+
+        // Verifica se o filme foi assistido e aplica a classe
         if (watchedMovies.includes(movie.id)) {
             movieCard.classList.add('watched');
+        } else {
+            movieCard.classList.remove('watched');
         }
     
         movieCard.id = `movie-card-${movie.id}`;
@@ -42,8 +44,8 @@ async function displayMovies(movies) {
     
         movieResultsContainer.appendChild(movieCard);
     });
-    
 }
+
 
 // Funções de busca
 async function handleSearchByGenre(genreId) {

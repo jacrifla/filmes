@@ -1,4 +1,5 @@
-import { fetchGenres } from '../services/apiservice.js';
+import { displayActorMovies } from '../scripts/displayActorMovies.js';
+import { fetchGenres, getPersonMovies } from '../services/apiservice.js';
 
 export async function createSearchBar(onSearchByGenre, onSearchByText) {
     const searchContainer = document.createElement('div');
@@ -30,29 +31,47 @@ export async function createSearchBar(onSearchByGenre, onSearchByText) {
     // Container para o campo de busca e o botão
     const searchInputContainer = document.createElement('div');
     searchInputContainer.className = 'd-flex col-7 col-md-8';
+
     // Campo de texto para a busca
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.className = 'form-control flex-grow-1';
-    searchInput.placeholder = 'Buscar filme...';
+    searchInput.placeholder = 'Buscar filme ou ator...';
 
     // Botão de busca
     const searchButton = document.createElement('button');
     searchButton.className = 'btn btn-primary ml-2 btn-search';
     searchButton.textContent = 'Buscar';
-    searchButton.onclick = () => {
+    searchButton.onclick = async () => {
         const query = searchInput.value.trim();
         if (query) {
-            onSearchByText(query); // Chama a função de busca por texto
+            // Primeiro tentamos buscar como um ator
+            const actorMovies = await getPersonMovies(query);
+            if (actorMovies.length > 0) {
+                console.log('Filmes do ator:', actorMovies);
+                // Exibe filmes do ator
+                displayActorMovies(actorMovies);
+            } else {
+                // Chama a função de busca por texto (filme)
+                onSearchByText(query); 
+            }
         }
     };
 
     // Adiciona o evento de pressionar Enter
-    searchInput.addEventListener('keydown', (event) => {
+    searchInput.addEventListener('keydown', async (event) => {
         if (event.key === 'Enter') {
             const query = searchInput.value.trim();
             if (query) {
-                onSearchByText(query); // Chama a função de busca por texto ao pressionar Enter
+                // Primeiro tentamos buscar como um ator
+                const actorMovies = await getPersonMovies(query);
+                if (actorMovies.length > 0) {
+                    console.log('Filmes do ator:', actorMovies);
+                    displayActorMovies(actorMovies);
+                } else {
+                    // Se não encontrar ator, procura por filmes
+                    onSearchByText(query); // Chama a função de busca por texto (filme)
+                }
             }
         }
     });

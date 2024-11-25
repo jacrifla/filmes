@@ -28,14 +28,25 @@ export function createCardButtons(movie) {
     watchedButton.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!isWatched) {
+            // Marca o filme como assistido no localStorage
             markAsWatched(movie.id);
-            console.log(`Marcando como assistido o filme ${movie.title}`);
+    
+            // Adiciona a classe "watched" ao card imediatamente
+            const movieCard = document.getElementById(`movie-card-${movie.id}`);
+            if (movieCard) {
+                movieCard.classList.add('watched');
+            }
+    
+            // Atualiza o botão "Assistido"
             isWatched = true;
             updateWatchedButton(watchedButton, isWatched);
+    
+            console.log(`Marcando como assistido o filme ${movie.title}`);
         } else {
             console.log(`O filme ${movie.title} já foi assistido.`);
         }
     });
+    
 
     // Botão de adicionar à lista
     let isInWatchList = isMovieInWatchList(movie.id);
@@ -80,6 +91,7 @@ function updateWatchedButton(button, isWatched) {
     button.title = isWatched ? 'Assistido' : 'Marcar como assistido';
     button.setAttribute('data-tooltip', isWatched ? 'Assistido' : 'Marcar como assistido');
 }
+
 
 
 // Atualiza o botão "Adicionar à lista" com base no estado.

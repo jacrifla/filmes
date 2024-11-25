@@ -4,6 +4,7 @@ import { createMovieCard } from '../components/MovieCard.js';
 import { fetchUserRating } from './ratings.js';
 import { getComentarios } from '../services/comentarioService.js';
 import { filterByRating, loadGenres, loadRatings, loadYears } from '../services/filterService.js';
+import { MovieModal } from '../components/MovieModal.js';
 
 const watchedMoviesCache = {}; 
 let watchedMoviesCacheData = [];
@@ -85,43 +86,69 @@ function filterMovies(userId) {
 
 async function renderMovieCards(filteredMovies, userId) {
   const watchedMoviesList = document.getElementById('watchedMoviesList');
-  watchedMoviesList.innerHTML = '';  // Limpa a lista de filmes antes de renderizar
+  watchedMoviesList.innerHTML = ''; // Limpa a lista de filmes antes de renderizar
 
-  const fragment = document.createDocumentFragment();
+  const row = document.createElement('div');
+  row.classList.add('row', 'gy-3'); // Grid do Bootstrap com espaçamento entre linhas
 
   // Carrega detalhes dos filmes filtrados
   const movieDetailsPromises = filteredMovies.map(async (movie) => {
-    if (watchedMoviesCache[movie.tmdb_id]) {
-      return watchedMoviesCache[movie.tmdb_id];
-    }
+      if (watchedMoviesCache[movie.tmdb_id]) {
+          return watchedMoviesCache[movie.tmdb_id];
+      }
 
-    const [movieDetails, comentarios, userRating] = await Promise.all([
-      fetchMovieDetails(movie.tmdb_id),
-      getComentarios(movie.tmdb_id),
-      fetchUserRating(movie.tmdb_id, userId),
-    ]);
+      const [movieDetails, comentarios, userRating] = await Promise.all([
+          fetchMovieDetails(movie.tmdb_id),
+          getComentarios(movie.tmdb_id),
+          fetchUserRating(movie.tmdb_id, userId),
+      ]);
 
-    const movieData = { movieDetails, comentarios, userRating };
-    watchedMoviesCache[movie.tmdb_id] = movieData;
-    return movieData;
+      const movieData = { movieDetails, comentarios, userRating };
+      watchedMoviesCache[movie.tmdb_id] = movieData;
+      return movieData;
   });
 
   const movieDetailsList = await Promise.all(movieDetailsPromises);
 
-  const movieCards = await Promise.all(movieDetailsList.map(async ({ movieDetails, comentarios, userRating }) => {
-    if (movieDetails?.poster_path) {
-      const movieCard = await createMovieCard(movieDetails, userId, userRating);
-      return movieCard;
-    }
-  }));
+  movieDetailsList.forEach(({ movieDetails }) => {
+    if (movieDetails?.title) {
+        const imdbRating = parseFloat(movieDetails.vote_average) || 0;
 
-  movieCards.forEach((movieCard) => {
-    if (movieCard) {
-      fragment.appendChild(movieCard);
+        // Formata o IMDb para ter apenas uma casa decimal
+        const formattedRating = imdbRating.toFixed(1);
+
+        // Determina a cor do badge IMDb
+        let badgeClass = 'bg-secondary';
+        if (imdbRating < 4) badgeClass = 'bg-danger';
+        else if (imdbRating < 7) badgeClass = 'bg-warning text-dark';
+        else if (imdbRating >= 8) badgeClass = 'bg-success';
+
+        // Cria a coluna para o filme
+        const col = document.createElement('div');
+        col.classList.add('col-md-4', 'col-sm-6');
+
+        // Adiciona conteúdo do filme
+        col.innerHTML = `
+            <div class="movie-item" style="cursor: pointer;">
+                <strong>${movieDetails.title}</strong>
+                <span class="year" style="font-size: 0.85rem;">(${new Date(movieDetails.release_date).getFullYear()})</span>
+                <div>
+                    IMDb: <span class="badge ${badgeClass}">${formattedRating || 'N/A'}</span>
+                </div>
+            </div>
+        `;
+
+        // Adiciona evento de clique para abrir o modal
+        col.querySelector('.movie-item').addEventListener('click', () => {
+            MovieModal(movieDetails.id); // Chama o componente do modal
+        });
+
+        row.appendChild(col);
     }
   });
 
-  watchedMoviesList.appendChild(fragment);
+
+  watchedMoviesList.appendChild(row);
 }
 
 async function fetchWatchedMovies() {

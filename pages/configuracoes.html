@@ -20,44 +20,49 @@
         <!-- Mensagens de erro ou sucesso podem ser injetadas aqui -->
     </div>
 
-    <div class="d-flex justify-content-between align-items-end">
-        <!-- Configuração Form Section -->
-        <div class="container mt-4">
-            <div class="card shadow-lg p-4">
-                <h3 class="mb-4">Atualizar Informações</h3>
-                <form id="configForm">
-                    <div class="mb-3">
-                        <label for="nameInput" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nameInput" placeholder="Digite seu nome" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="emailInput" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="emailInput" placeholder="Digite seu email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="passwordInput" class="form-label">Nova Senha</label>
-                        <input type="password" class="form-control" id="passwordInput" placeholder="Digite sua nova senha">
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Atualizar</button>
-                </form>
+    <!-- Grid Responsivo -->
+    <div class="container">
+        <div class="row gy-4">
+            <!-- Atualizar Informações -->
+            <div class="col-md-4 col-12">
+                <div class="card shadow-lg p-4">
+                    <h3 class="mb-4 text-center">Atualizar Informações</h3>
+                    <form id="configForm">
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nameInput" placeholder="Digite seu nome" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="emailInput" placeholder="Digite seu email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordInput" class="form-label">Nova Senha</label>
+                            <input type="password" class="form-control" id="passwordInput" placeholder="Digite sua nova senha">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Atualizar</button>
+                    </form>
+                </div>
             </div>
-        </div>
-        <!-- Estatísticas do Usuário -->
-        <div class="container mt-4">
-            <div class="card shadow-lg p-4">
-                <h3 class="mb-4">Estatísticas</h3>
-                <ul id="statisticsList" class="list-group">
-                    <li class="list-group-item">Títulos assistidos: <span id="watchedCount">0</span></li>
-                    <li class="list-group-item">No Watchlist: <span id="watchlistCount">0</span></li>
-                    <li class="list-group-item">Avaliações feitas: <span id="ratingCount">0</span></li>
-                </ul>
+
+            <!-- Estatísticas -->
+            <div class="col-md-4 col-12">
+                <div class="card shadow-lg p-4">
+                    <h3 class="mb-4 text-center">Estatísticas</h3>
+                    <ul id="statisticsList" class="list-group">
+                        <li class="list-group-item">Títulos assistidos: <span id="watchedCount">0</span></li>
+                        <li class="list-group-item">No Watchlist: <span id="watchlistCount">0</span></li>
+                        <li class="list-group-item">Avaliações feitas: <span id="ratingCount">0</span></li>
+                    </ul>
+                </div>
             </div>
-        </div>
-        <!-- Zona de Perigo e Exclusão da Conta -->
-        <div class="container mt-4">
-            <div class="card shadow-lg p-4 danger-card">
-                <h3 class="mb-4">Zona de Perigo</h3>
-                <button id="deleteAccount" class="btn btn-danger w-100">Excluir Conta</button>
+
+            <!-- Zona de Perigo -->
+            <div class="col-md-4 col-12">
+                <div class="card shadow-lg p-4 danger-card">
+                    <h3 class="mb-4 text-center">Zona de Perigo</h3>
+                    <button id="deleteAccount" class="btn btn-danger w-100">Excluir Conta</button>
+                </div>
             </div>
         </div>
     </div>
