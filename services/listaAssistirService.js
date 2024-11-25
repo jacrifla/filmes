@@ -30,11 +30,16 @@ export async function getWatchList() {
 
     try {
         const response = await fetch(`${API_URL}/to-watch/${userId}`);
-        return await response.json();
+        const data = await response.json();
+        
+        console.log('Dados obtidos da API para assistir:', data);  // Log para verificar os dados recebidos
+        
+        return data;
     } catch (error) {
         console.error("Erro ao obter lista para assistir:", error);
     }
 }
+
 
 // Função para obter lista de filmes "assistidos"
 export async function getWatchedList() {
