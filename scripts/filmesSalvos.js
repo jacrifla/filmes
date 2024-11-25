@@ -1,12 +1,16 @@
 import { getWatchList, markAsWatched } from '../services/listaAssistirService.js';
 import { fetchMovieDetails } from '../services/apiservice.js';
+import { MovieModal } from '../components/MovieModal.js';
 
+// Função principal para renderizar os filmes salvos na página.
 async function renderSavedMovies() {
     const savedMoviesList = document.getElementById('savedMoviesList');
     savedMoviesList.innerHTML = ''; // Limpa a lista antes de renderizar
-
+    
+    // Obtém a lista de filmes salvos
     const response = await getWatchList();
 
+    // Verifica se há filmes salvos para exibir
     if (!response || !response.success || !response.data || response.data.length === 0) {
         savedMoviesList.innerHTML = '<p>Nenhum filme salvo encontrado.</p>';
         return;
@@ -14,58 +18,72 @@ async function renderSavedMovies() {
 
     const savedMovies = response.data;
 
+    // Cria um contêiner de grade para organizar os cartões de filmes
+    const gridContainer = document.createElement('div');
+    gridContainer.classList.add('row', 'g-4'); // Estilo para a grade
+
     for (const movie of savedMovies) {
         try {
+            // Busca os detalhes do filme a partir do ID no TMDb
             const movieDetails = await fetchMovieDetails(movie.tmdb_id);
 
-            const genres = movieDetails.genres.map(genre => genre.name).join(', ');
-            const director = movieDetails.credits.crew.find(person => person.job === 'Director')?.name || 'Desconhecido';
-            const cast = movieDetails.credits.cast.slice(0, 3).map(actor => actor.name).join(', ');
-
-            // Criação do card com design aprimorado
+            // Cria o cartão de filme com os detalhes obtidos
             const movieCard = `
-            <li id="movie-card-${movie.tmdb_id}" class="list-group-item p-3">
-                <div class="card shadow-sm border-0">
-                    <div class="row g-0">
-                        <!-- Imagem do filme -->
-                        <div class="col-md-3">
-                            <img src="https://image.tmdb.org/t/p/w500${movieDetails.poster_path}" 
-                                class="img-fluid rounded-start movie-poster" 
-                                alt="${movieDetails.title}">
-                        </div>
-                        <!-- Detalhes do filme -->
-                        <div class="col-md-9">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold text-primary">${movieDetails.title}</h5>
-                                <p class="text-muted mb-1"><strong>Diretor:</strong> ${director}</p>
-                                <p class="text-muted mb-1"><strong>Atores:</strong> ${cast}</p>
-                                <p class="text-muted mb-1"><strong>Gênero:</strong> ${genres}</p>
-                                <p class="text-muted mb-1"><strong>Avaliação:</strong> ⭐ ${movieDetails.vote_average.toFixed(1)}</p>
-                                <p class="card-text mb-3"><strong>Sinopse:</strong> ${movieDetails.overview}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-muted small"><strong>Lançamento:</strong> ${new Date(movieDetails.release_date).toLocaleDateString('pt-BR')}</span>
-                                    <button id="mark-watched-${movie.tmdb_id}" class="btn btn-success btn-sm">Assistido</button>
-                                </div>
-                            </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <!-- Imagem do filme -->
+                    <img src="https://image.tmdb.org/t/p/w500${movieDetails.poster_path}" 
+                        class="card-img-top movie-poster" 
+                        alt="${movieDetails.title}">
+                    <!-- Detalhes do filme -->
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-center p-2">${movieDetails.title}</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button class="btn btn-primary btn-sm view-details" data-movie-id="${movieDetails.id}">Ver Detalhes</button>
+                            <button id="mark-watched-${movie.tmdb_id}" class="btn btn-success btn-sm">Assistido</button>
                         </div>
                     </div>
                 </div>
-            </li>
+            </div>
         `;
 
-            savedMoviesList.innerHTML += movieCard;
+            // Adiciona o cartão de filme à grade
+            gridContainer.innerHTML += movieCard;
         } catch (error) {
             console.error(`Erro ao buscar detalhes do filme com ID ${movie.tmdb_id}:`, error);
         }
     }
 
+    // Adiciona a grade com os cartões à lista de filmes salvos
+    savedMoviesList.appendChild(gridContainer);
+
+    // Adiciona os listeners para "Ver Detalhes"
+    addDetailsButtonListeners();
+    
+    // Adiciona os listeners para "Assistido"
     addWatchedEventListeners();
 }
 
+// Adiciona os eventos de clique nos botões "Ver Detalhes".
+function addDetailsButtonListeners() {
+    const detailButtons = document.querySelectorAll('.view-details');
+    detailButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const movieId = button.getAttribute('data-movie-id');
+            
+            // Exibe o modal com os detalhes do filme
+            MovieModal(movieId);
+        });
+    });
+}
+
+// Adiciona os eventos de clique nos botões "Assistido".
 function addWatchedEventListeners() {
     const buttons = document.querySelectorAll('[id^="mark-watched-"]');
     buttons.forEach(button => {
         button.addEventListener('click', async () => {
+            
+            // Extrai o ID do filme do atributo do botão
             const tmdbId = parseInt(button.id.replace('mark-watched-', ''), 10);
             await markAsWatched(tmdbId); // Marca o filme como assistido no backend ou serviço
             renderSavedMovies(); // Atualiza a lista de filmes na página após marcar como assistido
