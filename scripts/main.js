@@ -3,6 +3,7 @@ import { createSearchBar } from '../components/SearchBar.js';
 import { getCurrentMovies, searchMoviesByGenre, searchMoviesByText } from '../services/apiservice.js';
 import { createMovieCard } from '../components/MovieCard.js';
 import { MovieModal } from '../components/MovieModal.js';
+import { ScrollToTopButton } from '../components/ScrollToTop.js.js';
 
 // Exibe os filmes como cards
 async function displayMovies(movies) {
@@ -81,5 +82,10 @@ async function init() {
         loadCurrentMovies();
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollToTopButton = ScrollToTopButton();
+    document.body.appendChild(scrollToTopButton);
+})
 
 init();
