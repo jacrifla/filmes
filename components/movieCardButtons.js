@@ -1,12 +1,13 @@
-import { addToWatchList, markAsWatched, isMovieInWatchedList, isMovieInWatchList } from "../services/listaAssistirService.js";
+import { addToWatchList, isMovieInWatchedList, isMovieInWatchList, markAsWatched, removeFromWatchList } from "../services/listaAssistirService.js";
 import { CommentModal } from "./CommentModal.js";
 
 export function createCardButtons(movie) {
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'd-flex justify-content-around mt-2';
 
-    // Verifica se o filme já foi assistido
+    // Verifica se o filme já foi assistido e se está na lista de "para assistir"
     let isWatched = isMovieInWatchedList(movie.id);
+    let isInWatchList = isMovieInWatchList(movie.id);
 
     // Botão de comentário
     const commentButton = document.createElement('button');
@@ -25,44 +26,54 @@ export function createCardButtons(movie) {
     watchedButton.className = 'btn btn-link btn-card';
     updateWatchedButton(watchedButton, isWatched);
 
-    watchedButton.addEventListener('click', (e) => {
+    watchedButton.addEventListener('click', async (e) => {
         e.stopPropagation();
-        if (!isWatched) {
-            // Marca o filme como assistido no localStorage
-            markAsWatched(movie.id);
-    
-            // Adiciona a classe "watched" ao card imediatamente
+        try {
+            if (isWatched) {
+                // Se já foi assistido, remove da lista de "assistidos"
+                await removeFromWatchList(movie.id);
+                console.log(`Removendo o filme ${movie.title} da lista de assistidos`);
+                isWatched = false;
+            } else {
+                // Marca como assistido e atualiza o status
+                await markAsWatched(movie.id);
+                console.log(`Marcando o filme ${movie.title} como assistido`);
+                isWatched = true;
+            }
+            updateWatchedButton(watchedButton, isWatched);
+
+            // Atualiza a classe do card para refletir o status
             const movieCard = document.getElementById(`movie-card-${movie.id}`);
             if (movieCard) {
-                movieCard.classList.add('watched');
+                movieCard.classList.toggle('watched', isWatched);
             }
-    
-            // Atualiza o botão "Assistido"
-            isWatched = true;
-            updateWatchedButton(watchedButton, isWatched);
-    
-            console.log(`Marcando como assistido o filme ${movie.title}`);
-        } else {
-            console.log(`O filme ${movie.title} já foi assistido.`);
+        } catch (error) {
+            console.error("Erro ao alternar status do filme:", error);
         }
     });
-    
 
     // Botão de adicionar à lista
-    let isInWatchList = isMovieInWatchList(movie.id);
     const addToListButton = document.createElement('button');
     addToListButton.className = 'btn btn-link btn-card';
     updateWatchListButton(addToListButton, isInWatchList);
 
-    addToListButton.addEventListener('click', (e) => {
+    addToListButton.addEventListener('click', async (e) => {
         e.stopPropagation();
-        if (!isInWatchList) {
-            addToWatchList(movie.id);
-            console.log(`Adicionando à lista o filme ${movie.title}`);
-            isInWatchList = true;
+        try {
+            if (isInWatchList) {
+                // Se já estiver na lista, remove da lista de "para assistir"
+                await removeFromWatchList(movie.id);
+                console.log(`Removendo o filme ${movie.title} da lista de "para assistir"`);
+                isInWatchList = false;
+            } else {
+                // Adiciona à lista de "para assistir"
+                await addToWatchList(movie.id);
+                console.log(`Adicionando o filme ${movie.title} à lista de "para assistir"`);
+                isInWatchList = true;
+            }
             updateWatchListButton(addToListButton, isInWatchList);
-        } else {
-            console.log(`O filme ${movie.title} já está na lista.`);
+        } catch (error) {
+            console.error("Erro ao alternar status do filme:", error);
         }
     });
 
@@ -85,14 +96,13 @@ export function createCardButtons(movie) {
     return buttonContainer;
 }
 
+
 // Atualiza o botão "Assistido" com base no estado.
 function updateWatchedButton(button, isWatched) {
     button.innerHTML = isWatched ? '<i class="bi bi-eye-fill"></i>' : '<i class="bi bi-eye"></i>';
     button.title = isWatched ? 'Assistido' : 'Marcar como assistido';
     button.setAttribute('data-tooltip', isWatched ? 'Assistido' : 'Marcar como assistido');
 }
-
-
 
 // Atualiza o botão "Adicionar à lista" com base no estado.
 function updateWatchListButton(button, isInWatchList) {
