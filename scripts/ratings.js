@@ -1,5 +1,5 @@
 import { getUserId } from '../other/auth.js';
-import { getAvaliacoes, updateAvaliacao } from '../services/avaliacaoService.js';
+import { addAvaliacao, getAvaliacoes, updateAvaliacao } from '../services/avaliacaoService.js';
 
 export async function fetchUserRating(tmdb_id, userId) {    
     if (!userId) {
