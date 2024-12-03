@@ -48,6 +48,11 @@ export async function createMovieCard(movie, userId, userRating) {
     const initialRating = await fetchUserRating(movie.id, userId);    
     const starContainer = createStarContainer(movie, initialRating);
 
+    // Impede que o clique nas estrelas abra o modal
+    starContainer.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
     // Adiciona os elementos no card
     cardBody.appendChild(title);
     cardBody.appendChild(releaseDate);
