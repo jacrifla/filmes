@@ -154,16 +154,24 @@ async function renderMovieCards(filteredMovies, userId) {
 async function fetchWatchedMovies() {
     const response = await getWatchedList();
     if (response?.success && response.data?.length) {
-      const movieDetailsPromises = response.data.map(async (movie) => {
-        if (!movie.movieDetails) {
-          const movieDetails = await fetchMovieDetails(movie.tmdb_id);
-          movie.movieDetails = movieDetails;
-        }
+        const movieDetailsPromises = response.data.map(async (movie) => {
+            if (!movie.movieDetails) {
+                const movieDetails = await fetchMovieDetails(movie.tmdb_id);
+                movie.movieDetails = movieDetails;
+            }
         return movie;
-      });
+        });
+        
+        const moviesWithDetails = await Promise.all(movieDetailsPromises);
+      
+        // Ordena os filmes por título em ordem alfabética
+        moviesWithDetails.sort((a, b) => {
+            const titleA = a.movieDetails?.title?.toLowerCase() || '';
+            const titleB = b.movieDetails?.title?.toLowerCase() || '';
+            return titleA.localeCompare(titleB);
+        });
 
-      const moviesWithDetails = await Promise.all(movieDetailsPromises);
-      return moviesWithDetails;
+        return moviesWithDetails;
     }
 
     console.error('Failed to fetch watched movies:', response);

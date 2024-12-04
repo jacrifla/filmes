@@ -111,12 +111,12 @@ export async function manageMovieStatus(tmdbId, status, showToast = true) {
 
 // Função para adicionar filme à lista "para assistir"
 export async function addToWatchList(tmdbId, showToast = true) {
-    return manageMovieStatus(tmdbId, "Para Assistir", showToast);
+    return manageMovieStatus(tmdbId, "para assistir", showToast);
 }
 
 // Função para marcar filme como "assistido"
 export async function markAsWatched(tmdbId) {
-    return manageMovieStatus(tmdbId, "Assistido", true);
+    return manageMovieStatus(tmdbId, "assistido", true);
 }
 
 // Função para remover filme da lista
