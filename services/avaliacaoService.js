@@ -1,5 +1,4 @@
 import { BASE_API_URL } from "../other/config.js";
-
 const API_BASE_URL = `${BASE_API_URL}/avaliacoes`;
 
 // Função para buscar avaliações de um filme
@@ -8,9 +7,15 @@ export async function getAvaliacoes(tmdb_id, usuario_id) {
     try {
         const response = await fetch(`${API_BASE_URL}/${tmdb_id}/${usuario_id}`);
 
+        // Se a resposta for 404, retorna um objeto vazio sem logar erro
+        if (response.status === 404) {
+            return { data: [] }; // Retorna um objeto vazio se não houver comentários
+        }
+
         if (!response.ok) {
-            // Apenas verifica se a resposta é ok, mas não loga o erro no console
-            return null; // Retorna null caso não haja avaliação
+            const errorData = await response.json();
+            console.warn(`Erro ao buscar avaliações para o filme ${tmdb_id}:`, errorData.message);
+            return null;
         }
 
         const data = await response.json();

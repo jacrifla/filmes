@@ -1,4 +1,3 @@
-import { addToWatchList, markAsWatched } from '../services/listaAssistirService.js';
 import { fetchMovieDetails } from '../services/apiservice.js';
 
 // Limpa o modal e os efeitos relacionados
@@ -31,7 +30,7 @@ function createModalContent(movie) {
     };
 
     return `
-        <div class="modal fade" id="movieModal" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal fade" id="movieModal" aria-labelledby="movieModalLabel">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content bg-dark text-light">
                     <div class="modal-header">
