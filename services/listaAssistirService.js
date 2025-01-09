@@ -42,13 +42,19 @@ export async function getWatchList() {
 // Função para obter lista de filmes "assistidos"
 export async function getWatchedList() {
     const userId = validateUser();
-    if (!userId) return;
+    if (!userId) throw new Error("Usuário não autenticado");
 
     try {
         const response = await fetch(`${API_URL}/watched/${userId}`);        
-        return await response.json();
+        if (!response.ok) {
+            throw new Error(`Erro na resposta da API: ${response.statusText}`);
+        }
+        const responseData = await response.json();
+        
+        return responseData.data;
     } catch (error) {
         console.error("Erro ao obter lista de assistidos:", error);
+        throw error;
     }
 }
 

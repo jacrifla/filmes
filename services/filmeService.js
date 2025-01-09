@@ -14,7 +14,7 @@ export async function salvarFilme(tmdbId) {
         });
 
         const data = await response.json();
-        if (response.status === 201) {
+        if (response.status === 201) {           
             return true;  // Retorna verdadeiro se o filme for salvo com sucesso
         } else if (response.status === 400 && data.message === 'Filme já adicionado.') {
             createToast('Este filme já foi adicionado à lista!', 'warning');

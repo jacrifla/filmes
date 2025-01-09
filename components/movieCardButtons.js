@@ -37,7 +37,7 @@ export function createCardButtons(movie) {
             } else {
                 // Marca como assistido e atualiza o status
                 await markAsWatched(movie.id);
-                console.log(`Marcando o filme ${movie.title} como assistido`);
+                console.log(`Marcando o filme ${movie.title} como assistido. ID: ${movie.id}`);
                 isWatched = true;
             }
             updateWatchedButton(watchedButton, isWatched);

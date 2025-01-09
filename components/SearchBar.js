@@ -3,7 +3,7 @@ import { fetchGenres, getPersonMovies } from '../services/apiservice.js';
 
 export async function createSearchBar(onSearchByGenre, onSearchByText) {
     const searchContainer = document.createElement('div');
-    searchContainer.className = 'd-flex align-items-center w-100'; // Mantém o layout flexível
+    searchContainer.className = 'd-flex align-items-center w-100 px-5'; // Mantém o layout flexível
 
     // Seletor de gênero
     const genreSelect = document.createElement('select');

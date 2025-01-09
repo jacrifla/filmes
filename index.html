@@ -10,14 +10,19 @@
     <script type="module" src="scripts/main.js" defer></script>
 </head>
 <body>
-    <div id="header-container"></div>
-    <div class="container my-4">
-        <!-- Container da barra de busca -->
-        <div id="search-bar" class="form-row align-items-center mb-3"></div>
-        
-        <!-- Resultados dos filmes -->
+    <!-- Div que envolve o Header e a Barra de Busca -->
+    <header class="sticky-top my-4">
+        <!-- Header -->
+        <div id="header-container"></div>
+
+        <!-- Barra de Busca -->
+        <section id="search-bar" class="form-row align-items-center mb-3"></section>
+    </header>
+
+    <!-- Resultados dos filmes -->
+    <section class="container my-4">
         <div id="movie-results"></div>
-    </div>
+    </section>
 
     <!-- Scripts necessários do Bootstrap 5 -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
