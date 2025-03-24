@@ -26,15 +26,16 @@ function validateUser() {
 // Função para obter lista de filmes "para assistir"
 export async function getWatchList() {
     const userId = validateUser();
-    if (!userId) return;
+    if (!userId) return [];
 
     try {
         const response = await fetch(`${API_URL}/to-watch/${userId}`);
         const data = await response.json();
                 
-        return data;
+        return data.map(item => item.tmdb_id);
     } catch (error) {
         console.error("Erro ao obter lista para assistir:", error);
+        return [];
     }
 }
 
@@ -45,7 +46,7 @@ export async function getWatchedList() {
     if (!userId) throw new Error("Usuário não autenticado");
 
     try {
-        const response = await fetch(`${API_URL}/watched/${userId}`);        
+        const response = await fetch(`${API_URL}/watched/${userId}`);
         if (!response.ok) {
             throw new Error(`Erro na resposta da API: ${response.statusText}`);
         }
