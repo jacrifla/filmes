@@ -25,14 +25,13 @@ function validateUser() {
 
 // Função para obter lista de filmes "para assistir"
 export async function getWatchList() {
-    const userId = validateUser();
-    if (!userId) return [];
+    const userId = validateUser();    if (!userId) return [];
 
     try {
         const response = await fetch(`${API_URL}/to-watch/${userId}`);
         const data = await response.json();
                 
-        return data.map(item => item.tmdb_id);
+        return data.data.map(item => item.tmdb_id);
     } catch (error) {
         console.error("Erro ao obter lista para assistir:", error);
         return [];
