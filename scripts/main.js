@@ -9,6 +9,7 @@ import { syncWatchedMoviesWithLocalStorage } from '../services/syncService.js';
 // Exibe os filmes como cards
 async function displayMovies(movies) {
     const movieResultsContainer = document.getElementById('movie-results');
+
     movieResultsContainer.innerHTML = '';
     movieResultsContainer.className = 'row g-3';
 
@@ -75,8 +76,7 @@ async function init() {
         searchBarContainer.appendChild(searchBar);
     }
 
-    // Verifique se estamos na página index antes de carregar filmes
-    if (window.location.pathname === '/index.html') {
+    if (document.getElementById('movie-results')) {
         loadCurrentMovies();
     }
 };
