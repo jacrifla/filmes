@@ -84,13 +84,13 @@ async function loadUserData() {
 // Função para carregar as estatísticas do usuário
 async function loadUserStatistics() {
     try {
-        const watchList = await getWatchList();  // Função para obter filmes no watchlist
-        const watchedMovies = await getWatchedList(); // Função para obter filmes assistidos
+        const watchList = await getWatchList();        
+        const watchedMovies = await getWatchedList();
         const ratingCount = await getRatings(userId);       
 
         // Atualizando os contadores no HTML
-        document.getElementById('watchedCount').textContent = watchedMovies.data.length;        
-        document.getElementById('watchlistCount').textContent = watchList.data.length;
+        document.getElementById('watchedCount').textContent = watchedMovies.length;        
+        document.getElementById('watchlistCount').textContent = watchList.length;
         document.getElementById('ratingCount').textContent = ratingCount.length;
     } catch (error) {
         console.error('Erro ao carregar as estatísticas do usuário:', error);
