@@ -8,24 +8,24 @@ async function renderSavedMovies() {
     savedMoviesList.innerHTML = ''; // Limpa a lista antes de renderizar
     
     // Obtém a lista de filmes salvos
-    const response = await getWatchList();
+    const response = await getWatchList();    
 
     // Verifica se há filmes salvos para exibir
-    if (!response || !response.success || !response.data || response.data.length === 0) {
+    if (!response || response.length === 0) {
         savedMoviesList.innerHTML = '<p>Nenhum filme salvo encontrado.</p>';
         return;
     }
 
-    const savedMovies = response.data;
+    const savedMovies = response;
 
     // Cria um contêiner de grade para organizar os cartões de filmes
     const gridContainer = document.createElement('div');
     gridContainer.classList.add('row', 'g-4'); // Estilo para a grade
 
-    for (const movie of savedMovies) {
+    for (const movie of savedMovies) {        
         try {
             // Busca os detalhes do filme a partir do ID no TMDb
-            const movieDetails = await fetchMovieDetails(movie.tmdb_id);
+            const movieDetails = await fetchMovieDetails(movie);                     
 
             // Cria o cartão de filme com os detalhes obtidos
             const movieCard = `
@@ -40,7 +40,7 @@ async function renderSavedMovies() {
                         <h5 class="card-title fw-bold text-center p-2">${movieDetails.title}</h5>
                         <div class="d-flex justify-content-between align-items-center">
                             <button class="btn btn-primary btn-sm view-details" data-movie-id="${movieDetails.id}">Ver Detalhes</button>
-                            <button id="mark-watched-${movie.tmdb_id}" class="btn btn-success btn-sm">Assistido</button>
+                            <button id="mark-watched-${movie}" class="btn btn-success btn-sm">Assistido</button>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ async function renderSavedMovies() {
             // Adiciona o cartão de filme à grade
             gridContainer.innerHTML += movieCard;
         } catch (error) {
-            console.error(`Erro ao buscar detalhes do filme com ID ${movie.tmdb_id}:`, error);
+            console.error(`Erro ao buscar detalhes do filme com ID ${movie}:`, error);
         }
     }
 
@@ -80,13 +80,15 @@ function addDetailsButtonListeners() {
 // Adiciona os eventos de clique nos botões "Assistido".
 function addWatchedEventListeners() {
     const buttons = document.querySelectorAll('[id^="mark-watched-"]');
+
     buttons.forEach(button => {
         button.addEventListener('click', async () => {
             
             // Extrai o ID do filme do atributo do botão
             const tmdbId = parseInt(button.id.replace('mark-watched-', ''), 10);
-            await markAsWatched(tmdbId); // Marca o filme como assistido no backend ou serviço
-            renderSavedMovies(); // Atualiza a lista de filmes na página após marcar como assistido
+            
+            await markAsWatched(tmdbId);
+            renderSavedMovies();
         });
     });
 }
