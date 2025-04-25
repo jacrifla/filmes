@@ -1,0 +1,89 @@
+:root {
+  --form-bg: #f8f9fa;
+}
+
+.login-container {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Banner esquerdo */
+.login-banner {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  padding: 2rem;
+  background-color: var(--primary);
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.banner-content {
+  margin: auto;
+  max-width: 400px;
+}
+
+.banner-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.banner-subtitle {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Formulário direito */
+.login-form-wrapper {
+  flex: 1;
+  background-color: var(--form-bg);
+  padding: 2rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  border: none !important;
+  padding: 2rem;
+  background-color: var(--form-bg) !important;
+}
+
+/* Media query para dispositivos móveis */
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .login-banner {
+    width: 100%;
+    height: 200px;
+    padding: 1rem;
+  }
+
+  .login-form-wrapper {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  /* Remover o card em telas pequenas */
+  .login-card {
+    max-width: 100%;
+    padding: 1rem;
+
+    /* Remover sombra e borda */
+    box-shadow: none !important;
+  }
+
+  /* Ajustar o banner para que ocupe toda a tela */
+  .banner-title {
+    font-size: 1.8rem;
+  }
+
+  .banner-subtitle {
+    font-size: 1rem;
+  }
+}

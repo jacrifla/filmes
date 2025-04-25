@@ -1,0 +1,91 @@
+/* movieDetailModal.css */
+.bg-dark-custom {
+  background-color: #121212 !important;
+  color: #e0e0e0 !important;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.bg-dark-custom .text-dark {
+  color: #e0e0e0 !important;
+}
+
+.bg-dark-custom h5 {
+  color: #ffc107;
+  margin-top: 1rem;
+}
+
+.bg-dark-custom p {
+  margin-bottom: 0.5rem;
+}
+
+.bg-dark-custom a {
+  color: #ffc107;
+  text-decoration: none;
+}
+
+.bg-dark-custom a:hover {
+  text-decoration: underline;
+  color: #03a9f4;
+}
+
+.bg-dark-custom ul {
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+
+.bg-dark-custom img {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.bg-dark-custom img:hover {
+  transform: scale(1.02);
+}
+
+/* Remove as bordas padrão do Header e Footer do Modal */
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+/* Se quiser remover os fundos claros do título e rodapé também */
+.modal-header,
+.modal-footer {
+  background-color: transparent;
+}
+
+.modal-content.bg-dark-custom {
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.modal-footer .btn-secondary {
+  background-color: #444;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.modal-footer .btn-secondary:hover {
+  background-color: #666;
+  transform: scale(1.05);
+}
+
+.btn-close {
+  filter: invert(1); /* Deixa branco em fundo escuro */
+  opacity: 1;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-close:hover {
+  transform: scale(1.2);
+  opacity: 0.8;
+}

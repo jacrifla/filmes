@@ -1,0 +1,50 @@
+:root {
+  --bg-reset: #212529;
+  --bg-light-reset: #efefef;
+}
+
+.reset-form-card {
+  border-radius: 1rem;
+}
+
+.bg-dark {
+  background-color: var(--bg-reset);
+}
+
+.reset-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-reset);
+  color: var(--bg-reset);
+  padding: 1rem;
+}
+
+.reset-card {
+  width: 100%;
+  max-width: 500px;
+  background-color: var(--bg-light-reset);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 576px) {
+  .reset-page {
+    align-items: flex-start;
+    justify-content: center;
+    color: var(--bg-light-reset);
+  }
+
+  .reset-card {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    background-color: transparent;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
